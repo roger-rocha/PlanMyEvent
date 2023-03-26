@@ -10,8 +10,8 @@ import { DashboardShell } from "@/components/shell"
 import { Card } from "@/components/ui/card"
 
 export const metadata = {
-  title: "Billing",
-  description: "Manage billing and your subscription plan.",
+  title: "Planos",
+  description: "Gerencie o seu plano",
 }
 
 export default async function BillingPage() {
@@ -35,8 +35,8 @@ export default async function BillingPage() {
   return (
     <DashboardShell>
       <DashboardHeader
-        heading="Billing"
-        text="Manage billing and your subscription plan."
+        heading="Planos"
+        text="Gerencie o seu plano e assinatura."
       />
       <div className="grid gap-10">
         <BillingForm
@@ -47,24 +47,24 @@ export default async function BillingPage() {
         />
         <Card>
           <Card.Header>
-            <Card.Title>Note</Card.Title>
+            <Card.Title>Nota</Card.Title>
           </Card.Header>
           <Card.Content className="space-y-4 pb-6 text-sm">
             <p>
-              Taxonomy app is a demo app using a Stripe test environment.{" "}
+              Plan my Event é um app demo usando o ambiente de teste do Stripe.{" "}
               <strong>
-                You can test the upgrade and won&apos;t be charged.
+                Você pode testar fazer o upgrade de plano e não será cobrado.
               </strong>
             </p>
             <p>
-              You can find a list of test card numbers on the{" "}
+             Você pode achar uma lista de números de cartão para testar na {" "}
               <a
                 href="https://stripe.com/docs/testing#cards"
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium underline underline-offset-8"
               >
-                Stripe docs
+                documentação do Stripe
               </a>
               .
             </p>

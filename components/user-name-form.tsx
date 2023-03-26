@@ -74,10 +74,9 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     >
       <Card>
         <Card.Header>
-          <Card.Title>Your Name</Card.Title>
+          <Card.Title>Seu Nome</Card.Title>
           <Card.Description>
-            Please enter your full name or a display name you are comfortable
-            with.
+            Por favor coloque seu nome completo ou o nome que esteja confortável para mostrar.
           </Card.Description>
         </Card.Header>
         <Card.Content>
@@ -105,7 +104,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             {isSaving && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            <span>Save</span>
+            <span>Salvar</span>
           </button>
         </Card.Footer>
       </Card>

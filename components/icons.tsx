@@ -21,13 +21,13 @@ import {
   Twitter,
   User,
   X,
-  type Icon as LucideIcon,
+  type Icon as LucideIcon, PartyPopper, CalendarCheck2,
 } from "lucide-react"
 
 export type Icon = LucideIcon
 
 export const Icons = {
-  logo: Command,
+  logo: CalendarCheck2,
   close: X,
   spinner: Loader2,
   chevronLeft: ChevronLeft,
@@ -36,6 +36,7 @@ export const Icons = {
   post: FileText,
   page: File,
   media: Image,
+  party: PartyPopper,
   settings: Settings,
   billing: CreditCard,
   ellipsis: MoreVertical,

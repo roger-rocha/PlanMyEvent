@@ -21,7 +21,7 @@ export function PostItem({ post }: PostItemProps) {
         </Link>
         <div>
           <p className="text-sm text-slate-600">
-            {formatDate(post.createdAt?.toDateString())}
+            Criado em {formatDate(post.createdAt?.toDateString())}
           </p>
         </div>
       </div>

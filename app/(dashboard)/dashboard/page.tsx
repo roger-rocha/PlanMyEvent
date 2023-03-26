@@ -45,7 +45,7 @@ export default async function DashboardPage() {
 
   return (
     <DashboardShell>
-      <DashboardHeader heading="Posts" text="Create and manage posts.">
+      <DashboardHeader heading="Eventos" text="Crie e gerencie o seus eventos.">
         <PostCreateButton />
       </DashboardHeader>
       <div>
@@ -57,10 +57,10 @@ export default async function DashboardPage() {
           </div>
         ) : (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Icon name="post" />
-            <EmptyPlaceholder.Title>No posts created</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Icon name="party" />
+            <EmptyPlaceholder.Title>Nenhum evento criado</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              You don&apos;t have any posts yet. Start creating content.
+              Você ainda não tem eventos criados. Comece criando um evento.
             </EmptyPlaceholder.Description>
             <PostCreateButton
               className={cn(

@@ -6,7 +6,7 @@ import { DashboardShell } from "@/components/shell"
 export default function DashboardLoading() {
   return (
     <DashboardShell>
-      <DashboardHeader heading="Posts" text="Create and manage posts.">
+      <DashboardHeader heading="Eventos" text="Crie e gerencie o seus eventos.">
         <PostCreateButton />
       </DashboardHeader>
       <div className="divide-y divide-neutral-200 rounded-md border border-slate-200">

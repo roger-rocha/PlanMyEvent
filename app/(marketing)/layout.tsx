@@ -18,12 +18,18 @@ export default async function MarketingLayout({
       <header className="container sticky top-0 z-40 bg-white">
         <div className="flex h-16 items-center justify-between border-b border-b-slate-200 py-4">
           <MainNav items={marketingConfig.mainNav} />
-          <nav>
+          <nav className="flex gap-3">
             <Link
               href="/login"
               className={cn(buttonVariants({ size: "sm" }), "px-4")}
             >
               Login
+            </Link>
+            <Link
+              href="/register"
+              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "px-4")}
+            >
+              Criar Conta
             </Link>
           </nav>
         </div>

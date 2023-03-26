@@ -60,7 +60,7 @@ export function PostOperations({ post }: PostOperationsProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
             <Link href={`/editor/${post.id}`} className="flex w-full">
-              Edit
+              Editar
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -68,7 +68,7 @@ export function PostOperations({ post }: PostOperationsProps) {
             className="flex cursor-pointer items-center text-red-600 focus:bg-red-50"
             onSelect={() => setShowDeleteAlert(true)}
           >
-            Delete
+            Deletar
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -76,14 +76,14 @@ export function PostOperations({ post }: PostOperationsProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this post?
+              Você tem certeza que quer deletar esse evento?
             </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone.
+              Essa ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={async (event) => {
                 event.preventDefault()
@@ -104,7 +104,7 @@ export function PostOperations({ post }: PostOperationsProps) {
               ) : (
                 <Icons.trash className="mr-2 h-4 w-4" />
               )}
-              <span>Delete</span>
+              <span>Deletar</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
