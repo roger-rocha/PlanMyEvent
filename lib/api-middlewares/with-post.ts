@@ -9,6 +9,10 @@ export const schema = z.object({
   postId: z.string(),
 })
 
+export const eventSchema = z.object({
+  eventId: z.string()
+})
+
 export function withPost(handler: NextApiHandler) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -29,6 +33,36 @@ export function withPost(handler: NextApiHandler) {
 
       return handler(req, res)
     } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(422).json(error.issues)
+      }
+
+      return res.status(500).end()
+    }
+  }
+}
+
+
+export function withEvent(handler: NextApiHandler) {
+  return async function (req: NextApiRequest, res: NextApiResponse) {
+    try {
+      const query = await eventSchema.parse(req.query)
+
+      // Check if the user has access to this post.
+      const session = await getServerSession(req, res, authOptions)
+      const count = await db.event.count({
+        where: {
+          id: query.eventId,
+          authorId: session?.user.id,
+        },
+      })
+
+      if (count < 1) {
+        return res.status(403).end()
+      }
+
+      return handler(req, res)
+    }catch (error) {
       if (error instanceof z.ZodError) {
         return res.status(422).json(error.issues)
       }

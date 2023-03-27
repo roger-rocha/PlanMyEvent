@@ -9,23 +9,24 @@ import { cn } from "@/lib/utils"
 import { EmptyPlaceholder } from "@/components/empty-placeholder"
 import { DashboardHeader } from "@/components/header"
 import { PostCreateButton } from "@/components/post-create-button"
-import { PostItem } from "@/components/post-item"
 import { DashboardShell } from "@/components/shell"
 import { buttonVariants } from "@/components/ui/button"
+import {EventItem} from "@/components/event-item";
+import {EventCreateButton} from "@/components/event-create-button";
 
 export const metadata = {
   title: "Dashboard",
 }
 
-const getPostsForUser = cache(async (userId: User["id"]) => {
-  return await db.post.findMany({
+const getEventsForUser = cache(async (userId: User["id"]) => {
+  return await db.event.findMany({
     where: {
       authorId: userId,
     },
     select: {
       id: true,
       title: true,
-      published: true,
+      dateEvent: true,
       createdAt: true,
     },
     orderBy: {
@@ -41,7 +42,7 @@ export default async function DashboardPage() {
     redirect(authOptions?.pages?.signIn || "/login")
   }
 
-  const posts = await getPostsForUser(user.id)
+  const events = await getEventsForUser(user.id)
 
   return (
     <DashboardShell>
@@ -49,10 +50,10 @@ export default async function DashboardPage() {
         <PostCreateButton />
       </DashboardHeader>
       <div>
-        {posts?.length ? (
+        {events?.length ? (
           <div className="divide-y divide-neutral-200 rounded-md border border-slate-200">
-            {posts.map((post) => (
-              <PostItem key={post.id} post={post} />
+            {events.map((event) => (
+              <EventItem key={event.id} event={event} />
             ))}
           </div>
         ) : (
@@ -62,7 +63,7 @@ export default async function DashboardPage() {
             <EmptyPlaceholder.Description>
               Você ainda não tem eventos criados. Comece criando um evento.
             </EmptyPlaceholder.Description>
-            <PostCreateButton
+            <EventCreateButton
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "text-slate-900"

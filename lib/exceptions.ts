@@ -1,5 +1,5 @@
 export class RequiresProPlanError extends Error {
-  constructor(message = "This action requires a pro plan") {
+  constructor(message = "Essa ação requer o plano Pro, pois já atingiu o limite de 3 eventos") {
     super(message)
   }
 }
