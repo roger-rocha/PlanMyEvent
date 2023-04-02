@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import * as z from "zod"
 
 import { withMethods } from "@/lib/api-middlewares/with-methods"
-import {withEvent, withPost} from "@/lib/api-middlewares/with-post"
+import { withEvent } from "@/lib/api-middlewares/with-post"
 import { db } from "@/lib/db"
 import {postPatchEventSchema, postPatchSchema} from "@/lib/validations/post"
 

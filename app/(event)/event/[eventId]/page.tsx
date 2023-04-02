@@ -35,6 +35,7 @@ export default async function EventPage({ params }: EventPageProps) {
   console.log(event)
 
   if (!event) {
+    console.log("Nao achou o evento")
     notFound()
   }
 

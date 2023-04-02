@@ -10,14 +10,14 @@ export const Time = () => {
   const { time } = useContextTime()
   const { timeButton } = useContextTimePropGetters()
   return (
-    <ul className="scrollbar-hide m-0 max-h-80 list-none overflow-y-auto p-0">
+    <ul className="m-0 max-h-80 list-none overflow-y-auto scrollbar-none">
       {time.map((t) => (
         <li
           key={t.$date.toString()}
-          className="flex flex-col justify-center p-0"
+          className="flex flex-col justify-center p-0 pt-2"
         >
           <Button
-            className={getTimesClassName("text-xs px-8", t)}
+            className={getTimesClassName("text-lg px-10", t)}
             {...timeButton(t)}
           >
             {t.time}

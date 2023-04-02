@@ -93,6 +93,7 @@ specifiers:
   shiki: ^0.11.1
   stripe: ^11.1.0
   tailwind-merge: ^1.6.2
+  tailwind-scrollbar: ^3.0.0
   tailwindcss: ^3.1.7
   tailwindcss-animate: ^1.0.5
   typescript: 4.7.4
@@ -196,6 +197,7 @@ devDependencies:
   rehype-slug: 5.1.0
   remark: 14.0.2
   remark-gfm: 3.0.1
+  tailwind-scrollbar: 3.0.0_tailwindcss@3.2.4
   tailwindcss: 3.2.4_postcss@8.4.19
   typescript: 4.7.4
   unist-util-visit: 4.1.1
@@ -7301,6 +7303,15 @@ packages:
   /tailwind-merge/1.8.0:
     resolution: {integrity: sha512-tER/2SbYRdfPYg6m4pDWZSlbymLTmDi+dx4iCsJmgmz4UDGzgnVelOvBe3GNtGCw9Bmc4MiObfJJbKeVL+KnMQ==}
     dev: false
+
+  /tailwind-scrollbar/3.0.0_tailwindcss@3.2.4:
+    resolution: {integrity: sha512-OkVRX9Q1T769vk979UZ519jhj/j/zNBHql7zPLI+tlhX+ahksYO4ZryWD29lOETDx9Wj1sw+K1OeW7W3+ECQOA==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.2.4_postcss@8.4.19
+    dev: true
 
   /tailwindcss-animate/1.0.5_tailwindcss@3.2.4:
     resolution: {integrity: sha512-UU3qrOJ4lFQABY+MVADmBm+0KW3xZyhMdRvejwtXqYOL7YjHYxmuREFAZdmVG5LPe5E9CAst846SLC4j5I3dcw==}

@@ -7,6 +7,6 @@ interface SectionProps {
 }
 
 export const Section: FC<SectionProps> = ({ className, children }) => {
-  const sectionClassName = clsx("w-56", className)
+  const sectionClassName = clsx("w-58", className)
   return <section className={sectionClassName}>{children}</section>
 }

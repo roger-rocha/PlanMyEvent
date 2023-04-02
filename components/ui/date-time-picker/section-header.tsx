@@ -11,7 +11,7 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
   children,
 }) => {
   const headerClassName = clsx(
-    "flex flex-row gap-4 justify-center mb-2 ",
+    "flex w-full items-center gap-4 justify-center mb-2 ",
     className
   )
   return <header className={headerClassName}>{children}</header>

@@ -3,7 +3,7 @@ import {
   useContextDays,
   useContextMonthsPropGetters,
 } from "@rehookify/datepicker"
-import {ChevronLeft, ChevronsRight} from "lucide-react";
+import {ChevronLeft, ChevronRight} from "lucide-react";
 
 import { Button, Calendar, Time } from "./"
 
@@ -17,23 +17,23 @@ export function Root() {
       <h2 className="mob:text-xl mob:w-full mt-3 mb-6 w-full text-center font-bold leading-tight">
         {formattedDates[formattedDates.length - 1]}
       </h2>
-      <main className="mb-4 flex w-full items-center">
-        <div className="h-82 shadow-xs w-3/5 rounded border border-slate-300 p-4 shadow shadow-slate-300">
+      <main className="h-82 mb-4 flex w-full items-center">
+        <div className="h-400 shadow-xs w-4/5 rounded border border-slate-300 p-4 shadow shadow-slate-300">
           <Calendar
             prevButton={
-              <Button className="w-8" {...previousMonthButton()}>
+              <Button className=" w-8 grow" {...previousMonthButton()}>
                 <ChevronLeft />
               </Button>
             }
             nextButton={
-              <Button className="w-8" {...nextMonthButton()}>
-                <ChevronsRight />
+              <Button className="w-8 grow" {...nextMonthButton()}>
+                <ChevronRight />
               </Button>
             }
             calendar={calendars[0]}
           />
         </div>
-        <div className="h-82 shadow-xs scrollbar-hide ml-2 w-2/5 rounded border border-slate-300 p-4 shadow shadow-slate-300">
+        <div className="shadow-xs scrollbar-hide w-2/7 ml-2 h-full rounded border border-slate-300 p-4 shadow shadow-slate-300">
           <Time />
         </div>
       </main>

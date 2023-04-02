@@ -26,23 +26,28 @@ export const Calendar: FC<CalendarProps> = ({
   const { weekDays } = useContextCalendars()
   const { dayButton } = useContextDaysPropGetters()
   const { days, month } = calendar
+
+  const capitalizeFirstLetter = (word: string) => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
   return (
-    <Section>
+    <Section className="w-full">
       <SectionHeader>
         {prevButton || <div />}
-        <p className="text-center text-sm">{month}</p>
+        <p className="text-md grow-0 text-center">{capitalizeFirstLetter(month)}</p>
         {nextButton || <div />}
       </SectionHeader>
-      <div className="mb-2 grid h-8 grid-cols-7 items-center gap-y-2">
+      <div className="mb-2 grid h-8 grid-cols-7 items-center gap-y-5 gap-x-10">
         {weekDays.map((d) => (
-          <p className="text-center text-xs">{d}</p>
+          <p className="mr-3 text-center text-xs">{capitalizeFirstLetter(d)}</p>
         ))}
       </div>
-      <main className="grid grid-cols-7 gap-y-2">
+      <main className="mr-3 grid grid-cols-7 gap-y-5 gap-x-10">
         {days.map((d) => (
           <Button
             key={d.$date.toString()}
-            className={getDayClassName("w-8 text-xs", d)}
+            className={getDayClassName("w-8 mr-3 text-xs", d)}
             {...dayButton(d)}
           >
             {d.day}

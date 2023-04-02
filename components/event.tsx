@@ -67,7 +67,7 @@ export function EventEditor({event}: EventProps) {
         <div className="flex items-center space-x-10">
           <Link
             href="/dashboard"
-            className={cn(buttonVariants({ variant: "ghost" }))}
+            className={cn(buttonVariants({ variant: "ghost" }), "absolute top-4 left-4 md:top-8 md:left-8")}
           >
             <>
               <Icons.chevronLeft className="mr-2 h-4 w-4" />
@@ -80,7 +80,7 @@ export function EventEditor({event}: EventProps) {
             className="flex max-w-[980px] flex-col items-center"
           >
             <h1 className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-              Criando o seu evento
+              Editando o seu evento
             </h1>
             <div className="grid w-4/5 items-center gap-1.5">
               <Label>Nome do Evento</Label>
@@ -89,6 +89,7 @@ export function EventEditor({event}: EventProps) {
                 name="eventName"
                 id="event-name"
                 placeholder="Churras do pedrinho"
+                value={event.title}
               />
             </div>
             <div className="mt-8 grid w-4/5 gap-1.5">
@@ -97,6 +98,7 @@ export function EventEditor({event}: EventProps) {
                 name="eventDetails"
                 placeholder="Levar carne e muita cerveja"
                 id="event-details"
+                value={event.details}
               />
             </div>
             <div className="mt-8 w-4/5">
@@ -126,7 +128,7 @@ export function EventEditor({event}: EventProps) {
               </DatePickerStateProvider>
             </div>
             <Button type="submit" className="mt-3">
-              Criar Evento
+              Salvar
             </Button>
           </div>
       </section>
