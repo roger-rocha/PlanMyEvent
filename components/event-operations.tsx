@@ -2,11 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { toast } from "@/hooks/use-toast"
-import { Event } from "@prisma/client"
+import {useRouter} from "next/navigation"
+import {toast} from "@/hooks/use-toast"
+import {Event} from "@prisma/client"
 
-import { Icons } from "@/components/icons"
+import {Icons} from "@/components/icons"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,7 +45,7 @@ interface EventOperationsProps {
   event: Pick<Event, "id" | "title">
 }
 
-export function EventOperations({ event }: EventOperationsProps) {
+export function EventOperations({event}: EventOperationsProps) {
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
@@ -53,17 +53,24 @@ export function EventOperations({ event }: EventOperationsProps) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-slate-50">
-          <Icons.ellipsis className="h-4 w-4" />
+        <DropdownMenuTrigger
+          className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-slate-50">
+          <Icons.ellipsis className="h-4 w-4"/>
           <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem>
+            <Link className="flex w-full text-blue-600 focus:bg-blue-50" href={`/event/report/${event.id}`}>
+              Ver Relatório
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator/>
           <DropdownMenuItem>
             <Link href={`/event/${event.id}`} className="flex w-full">
               Editar
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator/>
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-red-600 focus:bg-red-50"
             onSelect={() => setShowDeleteAlert(true)}
@@ -100,9 +107,9 @@ export function EventOperations({ event }: EventOperationsProps) {
               className="bg-red-600 focus:ring-red-600"
             >
               {isDeleteLoading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin"/>
               ) : (
-                <Icons.trash className="mr-2 h-4 w-4" />
+                <Icons.trash className="mr-2 h-4 w-4"/>
               )}
               <span>Deletar</span>
             </AlertDialogAction>
