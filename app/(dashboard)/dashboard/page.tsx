@@ -1,16 +1,15 @@
-import { cache } from "react"
-import { redirect } from "next/navigation"
-import { User } from "@prisma/client"
+import {cache} from "react"
+import {redirect} from "next/navigation"
+import {User} from "@prisma/client"
 
-import { authOptions } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { getCurrentUser } from "@/lib/session"
-import { cn } from "@/lib/utils"
-import { EmptyPlaceholder } from "@/components/empty-placeholder"
-import { DashboardHeader } from "@/components/header"
-import { PostCreateButton } from "@/components/post-create-button"
-import { DashboardShell } from "@/components/shell"
-import { buttonVariants } from "@/components/ui/button"
+import {authOptions} from "@/lib/auth"
+import {db} from "@/lib/db"
+import {getCurrentUser} from "@/lib/session"
+import {cn} from "@/lib/utils"
+import {EmptyPlaceholder} from "@/components/empty-placeholder"
+import {DashboardHeader} from "@/components/header"
+import {DashboardShell} from "@/components/shell"
+import {buttonVariants} from "@/components/ui/button"
 import {EventItem} from "@/components/event-item";
 import {EventCreateButton} from "@/components/event-create-button";
 
@@ -47,7 +46,7 @@ export default async function DashboardPage() {
   return (
     <DashboardShell>
       <DashboardHeader heading="Eventos" text="Crie e gerencie o seus eventos.">
-        <PostCreateButton />
+        <EventCreateButton />
       </DashboardHeader>
       <div>
         {events?.length ? (

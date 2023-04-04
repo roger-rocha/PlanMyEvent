@@ -1,8 +1,8 @@
-import { allDocuments } from "contentlayer/generated"
+import {allDocuments} from "contentlayer/generated"
 import * as z from "zod"
 
-import { absoluteUrl } from "@/lib/utils"
-import { ogImageSchema } from "@/lib/validations/og"
+import {absoluteUrl} from "@/lib/utils"
+import {ogImageSchema} from "@/lib/validations/og"
 
 interface MdxHeadProps {
   params: {
@@ -21,7 +21,7 @@ export default function MdxHead({ params, og }: MdxHeadProps) {
 
   const title = `${mdxDoc.title} - Taxonomy`
   const url = process.env.NEXT_PUBLIC_APP_URL
-  let ogUrl = new URL(`${url}/og.jpg`)
+  let ogUrl = new URL(`${url}/og.png`)
 
   const ogTitle = og?.heading || mdxDoc.title
   const ogDescription = mdxDoc.description

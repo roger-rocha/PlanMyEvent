@@ -1,11 +1,11 @@
-import { Inter as FontSans } from "next/font/google"
+import {Inter as FontSans} from "next/font/google"
 
 import "@/styles/globals.css"
-import { siteConfig } from "@/config/site"
-import { absoluteUrl, cn } from "@/lib/utils"
-import { Analytics } from "@/components/analytics"
-import { TailwindIndicator } from "@/components/tailwind-indicator"
-import { Toaster } from "@/components/ui/toaster"
+import {siteConfig} from "@/config/site"
+import {absoluteUrl, cn} from "@/lib/utils"
+import {Analytics} from "@/components/analytics"
+import {TailwindIndicator} from "@/components/tailwind-indicator"
+import {Toaster} from "@/components/ui/toaster"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -49,7 +49,7 @@ export const metadata = {
     siteName: siteConfig.name,
     images: [
       {
-        url: absoluteUrl("/og.jpg"),
+        url: absoluteUrl("/og.png"),
         width: 1200,
         height: 630,
         alt: siteConfig.name,
@@ -60,7 +60,7 @@ export const metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [`${siteConfig.url}/og.jpg`],
+    images: [`${siteConfig.url}/og.png`],
     creator: "@shadcn",
   },
   icons: {

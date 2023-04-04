@@ -1,14 +1,14 @@
-import { SiteConfig } from "types"
+import {SiteConfig} from "types"
 
 export const siteConfig: SiteConfig = {
   name: "Plan My Event",
   description:
     "Um app para gerenciar e criar eventos",
-  url: "https://tx.shadcn.com",
-  ogImage: "https://tx.shadcn.com/og.jpg",
+  url: "https://plan-my-event.vercel.app/",
+  ogImage: "https://plan-my-event.vercel.app/og.png",
   links: {
     site: "https://rogerrocha.vercel.app/",
-    twitter: "https://twitter.com/shadcn",
-    github: "https://github.com/shadcn/taxonomy",
+    twitter: "https://twitter.com/rogerrochadev",
+    github: "https://github.com/roger-rocha",
   },
 }
