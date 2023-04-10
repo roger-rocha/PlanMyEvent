@@ -1,27 +1,30 @@
 import {
   AlertTriangle,
+  Archive,
   ArrowRight,
+  CalendarCheck2,
   Check,
   ChevronLeft,
   ChevronRight,
-  Command,
   CreditCard,
   File,
   FileText,
-  Github,
   HelpCircle,
+  type Icon as LucideIcon,
   Image,
+  Link,
   Loader2,
   LucideProps,
   MoreVertical,
+  PartyPopper,
   Pizza,
   Plus,
   Settings,
+  TimerReset,
   Trash,
   Twitter,
   User,
   X,
-  type Icon as LucideIcon, PartyPopper, CalendarCheck2,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -46,6 +49,10 @@ export const Icons = {
   arrowRight: ArrowRight,
   help: HelpCircle,
   pizza: Pizza,
+  link: Link,
+  archive: Archive,
+  check: Check,
+  timer: TimerReset,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
@@ -64,5 +71,4 @@ export const Icons = {
     </svg>
   ),
   twitter: Twitter,
-  check: Check,
 }

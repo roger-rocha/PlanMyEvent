@@ -8,8 +8,15 @@ export const postPatchSchema = z.object({
 })
 
 export const postPatchEventSchema = z.object({
-    title: z.string().min(3).max(128).optional(),
-    details: z.string().min(10).max(255).optional(),
-    dateEvent: z.date().optional()
-}
-)
+    title: z.string().max(128),
+    details: z.string().max(255),
+    dateEvent: z.string()
+})
+
+
+export const postPatchEventInvitationSchema = z.object({
+  name: z.string(),
+  message: z.string(),
+  status: z.enum(["CONFIRMED", "UNCONFIRMED", "DECLINED"])
+})
+

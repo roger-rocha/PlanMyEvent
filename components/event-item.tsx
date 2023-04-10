@@ -1,9 +1,8 @@
 import Link from "next/link"
-import { Event } from "@prisma/client"
-
-import { formatDate } from "@/lib/utils"
-import { Skeleton } from "@/components/ui/skeleton"
+import {Event} from "@prisma/client"
+import {Skeleton} from "@/components/ui/skeleton"
 import {EventOperations} from "@/components/event-operations";
+import {format} from "date-fns";
 
 interface EventItemProps {
   event: Pick<Event, "id" | "title" | "dateEvent" | "createdAt">
@@ -21,7 +20,7 @@ export function EventItem({ event }: EventItemProps) {
         </Link>
         <div>
           <p className="text-sm text-slate-600">
-            Criado em {formatDate(event.createdAt?.toDateString())}
+            Agendado para {format(event.dateEvent, "dd/MM/Y H:mm")}
           </p>
         </div>
       </div>

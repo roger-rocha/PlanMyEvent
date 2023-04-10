@@ -1,11 +1,11 @@
 "use client"
-import { Event } from "@prisma/client"
+import {Event} from "@prisma/client"
 import * as z from "zod";
 import {postPatchEventSchema, postPatchSchema} from "@/lib/validations/post";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
-import {Button, buttonVariants} from "@/components/ui/button";
+import {buttonVariants} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
@@ -13,27 +13,26 @@ import {cn} from "@/lib/utils";
 import {Icons} from "@/components/icons";
 import Link from "next/link";
 import * as React from "react";
+import {useEffect, useState} from "react";
 import {toast} from "@/hooks/use-toast";
-import { DatePickerStateProvider } from "@rehookify/datepicker"
+import {DatePickerStateProvider} from "@rehookify/datepicker"
 import {Root} from "@/components/ui/date-time-picker/date-time-picker";
-import {useState} from "react";
 
 interface EventProps {
   event: Pick<Event, "id" | "title" | "details" | "dateEvent">
 }
 
-type FormData = z.infer<typeof postPatchSchema>
-
 type FormEventData = z.infer<typeof postPatchEventSchema>
 
 export function EventEditor({event}: EventProps) {
-  const { register, handleSubmit } = useForm<FormData>({
+  const { register, handleSubmit, setValue, watch } = useForm<FormEventData>({
     resolver: zodResolver(postPatchSchema),
   })
   const [selectedDates, onDatesChange] = useState<Date[]>([])
   const router = useRouter()
 
   async function onSubmit(data: FormEventData) {
+    console.log(data)
     const response = await fetch(`/api/events/${event.id}`, {
       method: "PATCH",
       headers: {
@@ -61,6 +60,17 @@ export function EventEditor({event}: EventProps) {
     })
   }
 
+  useEffect(() => {
+    return () => {
+      console.log(JSON.stringify(watch(), null, 2))
+    };
+  }, [watch()]);
+
+
+  useEffect(() => {
+    setValue("dateEvent", selectedDates[0]?.toDateString())
+  }, [selectedDates, setValue])
+
   return(
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className="mob:p-3 flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
@@ -86,20 +96,20 @@ export function EventEditor({event}: EventProps) {
               <Label>Nome do Evento</Label>
               <Input
                 type="text"
-                name="eventName"
-                id="event-name"
-                placeholder="Churras do pedrinho"
-                value={event.title}
-              />
+                id="title"
+                placeholder={event.title}
+                {...register("title")}>
+
+              </Input>
             </div>
             <div className="mt-8 grid w-4/5 gap-1.5">
               <Label>Detalhes sobre o evento</Label>
               <Textarea
-                name="eventDetails"
-                placeholder="Levar carne e muita cerveja"
-                id="event-details"
-                value={event.details}
-              />
+                placeholder={event.details}
+                id="details"
+                {...register("details")}
+              >
+              </Textarea>
             </div>
             <div className="mt-8 w-4/5">
               <Label>Data do evento</Label>
@@ -127,9 +137,9 @@ export function EventEditor({event}: EventProps) {
                 <Root />
               </DatePickerStateProvider>
             </div>
-            <Button type="submit" className="mt-3">
-              Salvar
-            </Button>
+            {/*<Button type="submit" className="mt-3">*/}
+            {/*  Salvar*/}
+            {/*</Button>*/}
           </div>
       </section>
     </form>
