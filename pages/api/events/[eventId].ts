@@ -1,10 +1,11 @@
-import { NextApiRequest, NextApiResponse } from "next"
+import {NextApiRequest, NextApiResponse} from "next"
 import * as z from "zod"
 
-import { withMethods } from "@/lib/api-middlewares/with-methods"
-import { withEvent } from "@/lib/api-middlewares/with-post"
-import { db } from "@/lib/db"
-import {postPatchEventSchema, postPatchSchema} from "@/lib/validations/post"
+import {withMethods} from "@/lib/api-middlewares/with-methods"
+import {withEvent} from "@/lib/api-middlewares/with-post"
+import {db} from "@/lib/db"
+import {postPatchEventSchema} from "@/lib/validations/post"
+import {formatISO} from "date-fns";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "DELETE") {
@@ -43,7 +44,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         data: {
           title: body.title ?? event.title,
           details: body.details ?? event.details,
-          dateEvent: body.dateEvent ?? event.dateEvent
+          dateEvent: formatISO(new Date(body.dateEvent)) ?? event.dateEvent
         },
       })
 

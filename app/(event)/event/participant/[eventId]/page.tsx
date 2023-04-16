@@ -2,7 +2,7 @@ import {notFound} from "next/navigation"
 import {Event} from "@prisma/client"
 
 import {db} from "@/lib/db"
-import {EventInvitation} from "@/components/ui/event-invitation";
+import {EventInvitation} from "@/components/event-invitation";
 
 async function getEventForParticipant(eventId: Event["id"]) {
   return await db.event.findFirst({

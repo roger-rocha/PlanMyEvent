@@ -1,11 +1,8 @@
 "use client"
 import {Event} from "@prisma/client"
-import * as z from "zod";
-import {postPatchEventSchema, postPatchSchema} from "@/lib/validations/post";
 import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
 import {useRouter} from "next/navigation";
-import {buttonVariants} from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
@@ -22,16 +19,19 @@ interface EventProps {
   event: Pick<Event, "id" | "title" | "details" | "dateEvent">
 }
 
-type FormEventData = z.infer<typeof postPatchEventSchema>
+
+type FormNewEventData = {
+  title: string;
+  details: string;
+  dateEvent: string;
+}
 
 export function EventEditor({event}: EventProps) {
-  const { register, handleSubmit, setValue, watch } = useForm<FormEventData>({
-    resolver: zodResolver(postPatchSchema),
-  })
+  const {register, handleSubmit, setValue, watch} = useForm<FormNewEventData>();
   const [selectedDates, onDatesChange] = useState<Date[]>([])
   const router = useRouter()
 
-  async function onSubmit(data: FormEventData) {
+  async function onSubmit(data: { title: string, details: string, dateEvent: string }) {
     console.log(data)
     const response = await fetch(`/api/events/${event.id}`, {
       method: "PATCH",
@@ -55,6 +55,7 @@ export function EventEditor({event}: EventProps) {
 
     router.refresh()
 
+
     return toast({
       description: "Seu evento foi salvo.",
     })
@@ -64,83 +65,84 @@ export function EventEditor({event}: EventProps) {
     return () => {
       console.log(JSON.stringify(watch(), null, 2))
     };
-  }, [watch()]);
+  }, [watch]);
 
 
   useEffect(() => {
-    setValue("dateEvent", selectedDates[0]?.toDateString())
+    setValue("dateEvent", selectedDates[0]?.toISOString())
   }, [selectedDates, setValue])
 
-  return(
+  return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <section className="mob:p-3 flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
         <div className="flex items-center space-x-10">
           <Link
             href="/dashboard"
-            className={cn(buttonVariants({ variant: "ghost" }), "absolute top-4 left-4 md:top-8 md:left-8")}
+            className={cn(buttonVariants({variant: "ghost"}), "absolute top-4 left-4 md:top-8 md:left-8")}
           >
             <>
-              <Icons.chevronLeft className="mr-2 h-4 w-4" />
+              <Icons.chevronLeft className="mr-2 h-4 w-4"/>
               Voltar
             </>
           </Link>
         </div>
-          <div
-            id="form-event"
-            className="flex max-w-[980px] flex-col items-center"
-          >
-            <h1 className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-              Editando o seu evento
-            </h1>
-            <div className="grid w-4/5 items-center gap-1.5">
-              <Label>Nome do Evento</Label>
-              <Input
-                type="text"
-                id="title"
-                placeholder={event.title}
-                {...register("title")}>
+        <div
+          id="form-event"
+          className="flex max-w-[980px] flex-col items-center"
+        >
+          <h1
+            className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+            Editando o seu evento
+          </h1>
+          <div className="grid w-4/5 items-center gap-1.5">
+            <Label>Nome do Evento</Label>
+            <Input
+              type="text"
+              id="title"
+              placeholder={event.title}
+              {...register("title")}>
 
-              </Input>
-            </div>
-            <div className="mt-8 grid w-4/5 gap-1.5">
-              <Label>Detalhes sobre o evento</Label>
-              <Textarea
-                placeholder={event.details}
-                id="details"
-                {...register("details")}
-              >
-              </Textarea>
-            </div>
-            <div className="mt-8 w-4/5">
-              <Label>Data do evento</Label>
-              <DatePickerStateProvider
-                config={{
-                  selectedDates,
-                  onDatesChange,
-                  dates: {
-                    mode: "single",
-                    toggle: true,
-                  },
-                  locale: {
-                    locale: "pt-BR",
-                    options: {
-                      day: "2-digit",
-                      month: "long",
-                      year: "numeric",
-                      hour12: true,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    },
-                  },
-                }}
-              >
-                <Root />
-              </DatePickerStateProvider>
-            </div>
-            {/*<Button type="submit" className="mt-3">*/}
-            {/*  Salvar*/}
-            {/*</Button>*/}
+            </Input>
           </div>
+          <div className="mt-8 grid w-4/5 gap-1.5">
+            <Label>Detalhes sobre o evento</Label>
+            <Textarea
+              placeholder={event.details}
+              id="details"
+              {...register("details")}
+            >
+            </Textarea>
+          </div>
+          <div className="mt-8 w-4/5">
+            <Label>Data do evento</Label>
+            <DatePickerStateProvider
+              config={{
+                selectedDates,
+                onDatesChange,
+                dates: {
+                  mode: "single",
+                  toggle: true,
+                },
+                locale: {
+                  locale: "pt-BR",
+                  options: {
+                    day: "2-digit",
+                    month: "long",
+                    year: "numeric",
+                    hour12: true,
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  },
+                },
+              }}
+            >
+              <Root/>
+            </DatePickerStateProvider>
+          </div>
+        </div>
+        <Button type="submit" className="mt-3">
+          Salvar
+        </Button>
       </section>
     </form>
   )

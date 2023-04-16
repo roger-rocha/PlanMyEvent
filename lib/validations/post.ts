@@ -8,8 +8,8 @@ export const postPatchSchema = z.object({
 })
 
 export const postPatchEventSchema = z.object({
-    title: z.string().max(128),
-    details: z.string().max(255),
+    title: z.string(),
+    details: z.string(),
     dateEvent: z.string()
 })
 

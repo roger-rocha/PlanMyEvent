@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react"
+import {FC, ReactNode} from "react"
 import clsx from "clsx"
 
 interface ButtonProps {
@@ -12,7 +12,7 @@ export const Button: FC<ButtonProps> = ({ className, children, ...props }) => {
     className
   )
   return (
-    <button className={buttonClassName} {...props}>
+    <button type="button" className={buttonClassName} {...props}>
       {children}
     </button>
   )
