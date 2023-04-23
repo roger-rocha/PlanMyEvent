@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import {useRouter} from "next/navigation"
+import {redirect, useRouter} from "next/navigation"
 import {toast} from "@/hooks/use-toast"
 import {Event} from "@prisma/client"
 
@@ -61,15 +61,26 @@ export function EventOperations({event}: EventOperationsProps) {
 
   return (
     <>
-      <div>
-
+      <div className="flex flex-row flex-nowrap">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
               <TooltipContent>Copiar Link do Evento</TooltipContent>
-              <Button variant="outline" size="sm" onClick={() => copyEventLink(event.id)}>
+              <Button variant="ghost" size="sm" onClick={() => copyEventLink(event.id)}>
                 <Icons.link className="h-4 w-4"></Icons.link>
               </Button>
+            </TooltipTrigger>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <TooltipContent>Ver Relatório</TooltipContent>
+              <Link href={`/event/report/${event.id}`}>
+                <Button variant="ghost" size="sm" onClick={() => redirect(`/event/report/${event.id}`)}>
+                  <Icons.report className="h-4 w-4"></Icons.report>
+                </Button>
+              </Link>
             </TooltipTrigger>
           </Tooltip>
         </TooltipProvider>
@@ -79,17 +90,11 @@ export function EventOperations({event}: EventOperationsProps) {
               <TooltipContent><p>Opções</p></TooltipContent>
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-slate-50">
+                  className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-100 dark:hover:text-slate-100 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent">
                   <Icons.ellipsis className="h-4 w-4"/>
                   <span className="sr-only">Abrir</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Link className="flex w-full text-blue-600 focus:bg-blue-50" href={`/event/report/${event.id}`}>
-                      Ver Relatório
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator/>
                   <DropdownMenuItem>
                     <Link href={`/event/${event.id}`} className="flex w-full">
                       Editar

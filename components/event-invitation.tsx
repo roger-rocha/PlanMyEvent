@@ -9,7 +9,9 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {toast} from "@/hooks/use-toast";
 import {Icons} from "@/components/icons";
-import {format} from "date-fns";
+import Confetti from "react-confetti";
+import {Textarea} from "@/components/ui/textarea";
+import {formatDate} from "@/components/event-item";
 
 
 interface EventProps {
@@ -24,16 +26,15 @@ type FormEventInvitationData = {
 
 
 export function EventInvitation({event}: EventProps) {
-  const {register, handleSubmit, watch, setValue} = useForm<FormEventInvitationData>()
-  const [status, setStatus] = useState<FormEventInvitationData["status"]>("CONFIRMED");
-  const router = useRouter()
-
-  useEffect(() => {
-    return () => {
-      setValue("status", status)
-    };
-  }, [setValue, status]);
-
+  const {register, handleSubmit, watch, setValue} = useForm<FormEventInvitationData>({
+    defaultValues: {
+      name: "",
+      message: "",
+      status: "CONFIRMED",
+    }
+  });
+  const [showConfetti, setShowConfetti] = useState(false);
+  const router = useRouter();
 
   async function onSubmit(data: FormEventInvitationData) {
     console.log(data)
@@ -52,12 +53,18 @@ export function EventInvitation({event}: EventProps) {
     if (!response?.ok) {
       return toast({
         title: "Aconteceu um imprevisto.",
-        description: "Sua confirmação não foi salvo. Por favor tente novamente.",
+        description: "Sua confirmação não foi salva. Por favor tente novamente.",
         variant: "destructive",
       })
     }
 
+
     router.refresh()
+
+    setShowConfetti(true);
+
+    setTimeout(() => setShowConfetti(false), 5000);
+
 
     return (
       toast({
@@ -73,29 +80,30 @@ export function EventInvitation({event}: EventProps) {
   }, [watch]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="container mx-auto grid items-start">
-      <section className="mob:p-3 container mx-auto flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
+    <form onSubmit={handleSubmit(onSubmit)} className="container mx-aut grid items-start">
+      <section className="mob:p-3 container mx-auto max-w-[570px] flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
+        {showConfetti && <Confetti/>}
         <div
           id="form-event"
-          className="container mx-auto flex flex-col items-center"
+          className="container w-full flex flex-col items-center"
         >
           <h1
-            className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
-            Seu convite para {event.title}
+            className="mb-10 text-left text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+            {event.title}
           </h1>
           <h2
-            className="mb-10 text-center text-2xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-3xl lg:text-4xl">
-            Data: {format(new Date(event.dateEvent), "dd/MM/Y H:mm")}
+            className="mb-10 text-left max-w-full text-2xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-3xl lg:text-4xl">
+            Data: {formatDate(event.dateEvent.toString())}
           </h2>
           <h3
-            className="mb-10 text-center text-xl font-extrabold leading-tight tracking-tighter sm:text-1xl md:text-2xl lg:text-3xl">
+            className="mb-10 text-left break-words max-w-full text-xl font-extrabold leading-tight tracking-tighter sm:text-1xl md:text-2xl lg:text-3xl">
             Detalhes: {event.details}
           </h3>
           <h4
-            className="mb-10 text-center text-l font-bold leading-tight tracking-tighter sm:text-l md:text-1xl lg:text-2xl">
-            Preencha os campos abaixo para confirmar a sua resposta
+            className="mb-10 text-left max-w-full font-bold leading-tight tracking-tighter sm:text-base md:text-lg lg:text-xl">
+            Preencha os campos abaixo
           </h4>
-          <div className="grid w-4/5 items-center gap-1.5">
+          <div className="grid w-full items-center gap-1.5">
             <Label>Seu nome</Label>
             <Input
               placeholder="Roger Rocha"
@@ -103,29 +111,27 @@ export function EventInvitation({event}: EventProps) {
 
             </Input>
           </div>
-          <div className="mt-8 grid w-4/5 mob:w-full gap-1.5">
+          <div className="mt-8 grid w-full mob:w-full gap-1.5">
             <Label>Mensagem</Label>
-            <Input
+            <Textarea
               placeholder="Vou levar pão de alho"
               {...register("message")}
             >
-            </Input>
+            </Textarea>
           </div>
-          <div className="mt-8">
-            <div className="flex flex-row p-5 gap-5">
-              <Button type="button" size="lg" variant="green" onClick={() => setStatus("CONFIRMED")}>
-                <Icons.party className="w-5 h-5 mr-3"></Icons.party> CONFIRMO
-              </Button>
-              <Button type="button" size="lg" variant="yellow" onClick={() => setStatus("UNCONFIRMED")}>
-                <Icons.timer className="w-5 h-5 mr-3"></Icons.timer> INDECISO
-              </Button>
-              <Button type="button" size="lg" variant="destructive" onClick={() => setStatus("DECLINED")}>
-                <Icons.close className="w-5 h-5 mr-3"></Icons.close> RECUSO
-              </Button>
-            </div>
+          <div className="flex flex-row mt-8 p-5 gap-4">
+            <Button type="button" size="lg" variant="green" onClick={() => setValue("status", "CONFIRMED")}>
+              <Icons.party className="w-5 h-5 mr-3"></Icons.party> CONFIRMO
+            </Button>
+            <Button type="button" size="lg" variant="yellow" onClick={() => setValue("status", "UNCONFIRMED")}>
+              <Icons.timer className="w-5 h-5 mr-3"></Icons.timer> INDECISO
+            </Button>
+            <Button type="button" size="lg" variant="destructive" onClick={() => setValue("status", "DECLINED")}>
+              <Icons.close className="w-5 h-5 mr-3"></Icons.close> RECUSO
+            </Button>
           </div>
-          <Button type="submit" className="mt-8">
-            <Icons.archive className="w-4 h-4 mr-1"></Icons.archive> Salvar
+          <Button type="submit" size="lg" className="mt-8">
+            <Icons.archive className="w-5 h-5 mr-3"></Icons.archive> SALVAR
           </Button>
         </div>
       </section>

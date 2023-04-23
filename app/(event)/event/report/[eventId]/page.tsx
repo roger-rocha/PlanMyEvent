@@ -9,9 +9,8 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {Icons} from "@/components/icons";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import {Separator} from "@/components/ui/separator";
-
+import {Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Title} from "@tremor/react";
+import {formatDate} from "@/components/event-item";
 
 async function getEventForUser(eventId: Event["id"], userId: User["id"]) {
   return await db.event.findFirst({
@@ -26,6 +25,19 @@ interface EventPageProps {
   params: { eventId: string }
 }
 
+const colors: { [key: string]: string } = {
+  "CONFIRMED": "bg-green-300 text-green-600 p-2 rounded-full",
+  "UNCONFIRMED": "bg-yellow-300 text-yellow-600 p-2 rounded-full",
+  "DECLINED": "bg-red-300 text-red-600 p-2 rounded-full",
+};
+
+const status: { [key: string]: string } = {
+  "CONFIRMED": "CONFIRMADO",
+  "UNCONFIRMED": "INDECISO",
+  "DECLINED": "RECUSADO",
+}
+
+
 async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Event["authorId"]) {
   return await db.eventParticipant.findMany({
     where: {
@@ -38,7 +50,8 @@ async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Even
       id: true,
       name: true,
       message: true,
-      status: true
+      status: true,
+      createdAt: true,
     },
     orderBy: {
       updatedAt: "desc",
@@ -83,19 +96,37 @@ export default async function EventReportPage({params}: EventPageProps) {
           Relatório do {event.title}
         </h1>
 
-        <ScrollArea className="h-72 w-48 rounded-md border border-slate-100 dark:border-slate-700">
-          <div className="p-4">
-            <h4 className="mb-4 text-sm font-medium leading-none">Tags</h4>
-            {eventParticipant.map((participant) => (
-              <React.Fragment>
-                <div className="text-sm" key={participant.id}>
-                  {participant.name}
-                </div>
-                <Separator className="my-2" />
-              </React.Fragment>
-            ))}
+        <Card>
+          <div className="flex flex-row">
+            <Icons.users className="w-5 h-5 mr-3"></Icons.users>
+            <Title>Lista de Convidados</Title>
           </div>
-        </ScrollArea>
+          <Table className="mt-5">
+            <TableHead>
+              <TableRow>
+                <TableHeaderCell>Nome</TableHeaderCell>
+                <TableHeaderCell>Mensagem</TableHeaderCell>
+                <TableHeaderCell>Status</TableHeaderCell>
+                <TableHeaderCell>Registro em</TableHeaderCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {eventParticipant.map((item) => (
+                <TableRow key={item.name}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.message}</TableCell>
+                  <TableCell>
+                    <span className={colors[item.status]}>
+                      {status[item.status]}
+                    </span>
+                  </TableCell>
+                  <TableCell align={"center"}>{formatDate(item.createdAt.toString())}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Card>
       </div>
     </section>
   )

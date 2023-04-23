@@ -8,6 +8,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./ui/**/*.{ts,tsx}",
     "./content/**/*.{md,mdx}",
+    "./node_modules/@tremor/**/*.{js,ts,jsx,tsx}"
   ],
   darkMode: ["class"],
   theme: {

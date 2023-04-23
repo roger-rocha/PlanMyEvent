@@ -2,10 +2,12 @@ import {
   AlertTriangle,
   Archive,
   ArrowRight,
+  Calendar,
   CalendarCheck2,
   Check,
   ChevronLeft,
   ChevronRight,
+  ClipboardSignature,
   CreditCard,
   File,
   FileText,
@@ -24,6 +26,7 @@ import {
   Trash,
   Twitter,
   User,
+  Users,
   X,
 } from "lucide-react"
 
@@ -53,6 +56,9 @@ export const Icons = {
   archive: Archive,
   check: Check,
   timer: TimerReset,
+  users: Users,
+  calendar: Calendar,
+  report: ClipboardSignature,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
