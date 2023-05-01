@@ -17,17 +17,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Button} from "@/components/ui/button";
 
-async function deleteEvent(eventId: string) {
+async function deleteEvent(eventId: string, eventTitle: string) {
   const response = await fetch(`/api/events/${eventId}`, {
     method: "DELETE",
   })
@@ -39,6 +32,11 @@ async function deleteEvent(eventId: string) {
       variant: "destructive",
     })
   }
+
+  toast({
+    title: "Evento deletado.",
+    description: `O evento ${eventTitle} foi deletado com sucesso.`,
+  });
 
   return true
 }
@@ -65,7 +63,19 @@ export function EventOperations({event}: EventOperationsProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <TooltipContent>Copiar Link do Evento</TooltipContent>
+              <TooltipContent>Editar</TooltipContent>
+              <Link href={`/event/${event.id}`}>
+                <Button variant="ghost" size="sm" onClick={() => redirect(`/event/${event.id}`)}>
+                  <Icons.pencil className="h-4 w-4"></Icons.pencil>
+                </Button>
+              </Link>
+            </TooltipTrigger>
+          </Tooltip>
+        </TooltipProvider>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <TooltipContent>Copiar Link</TooltipContent>
               <Button variant="ghost" size="sm" onClick={() => copyEventLink(event.id)}>
                 <Icons.link className="h-4 w-4"></Icons.link>
               </Button>
@@ -87,28 +97,10 @@ export function EventOperations({event}: EventOperationsProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <TooltipContent><p>Opções</p></TooltipContent>
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800 dark:text-slate-100 dark:hover:text-slate-100 data-[state=open]:bg-transparent dark:data-[state=open]:bg-transparent">
-                  <Icons.ellipsis className="h-4 w-4"/>
-                  <span className="sr-only">Abrir</span>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Link href={`/event/${event.id}`} className="flex w-full">
-                      Editar
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator/>
-                  <DropdownMenuItem
-                    className="flex cursor-pointer items-center text-red-600 focus:bg-red-50"
-                    onSelect={() => setShowDeleteAlert(true)}
-                  >
-                    Deletar
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <TooltipContent>Deletar</TooltipContent>
+              <Button variant="ghost" size="sm" onClick={() => setShowDeleteAlert(true)}>
+                <Icons.trash className="h-4 w-4"></Icons.trash>
+              </Button>
             </TooltipTrigger>
           </Tooltip>
         </TooltipProvider>
@@ -132,7 +124,7 @@ export function EventOperations({event}: EventOperationsProps) {
                 e.preventDefault()
                 setIsDeleteLoading(true)
 
-                const deleted = await deleteEvent(event.id)
+                const deleted = await deleteEvent(event.id, event.title)
 
                 if (deleted) {
                   setIsDeleteLoading(false)

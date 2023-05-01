@@ -1,20 +1,20 @@
 "use client"
 
 import * as React from "react"
-import { useRouter } from "next/navigation"
-import { toast } from "@/hooks/use-toast"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { User } from "@prisma/client"
-import { useForm } from "react-hook-form"
+import {useRouter} from "next/navigation"
+import {toast} from "@/hooks/use-toast"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {User} from "@prisma/client"
+import {useForm} from "react-hook-form"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
-import { userNameSchema } from "@/lib/validations/user"
-import { Icons } from "@/components/icons"
-import { buttonVariants } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {cn} from "@/lib/utils"
+import {userNameSchema} from "@/lib/validations/user"
+import {Icons} from "@/components/icons"
+import {buttonVariants} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: Pick<User, "id" | "name">
@@ -53,14 +53,14 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
 
     if (!response?.ok) {
       return toast({
-        title: "Something went wrong.",
-        description: "Your name was not updated. Please try again.",
+        title: "Oops aconteceu um erro.",
+        description: "Seu nome não foi atualizado. Tente novamente.",
         variant: "destructive",
       })
     }
 
     toast({
-      description: "Your name has been updated.",
+      description: "Seu nome foi atualizado.",
     })
 
     router.refresh()
@@ -73,13 +73,13 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       {...props}
     >
       <Card>
-        <Card.Header>
-          <Card.Title>Seu Nome</Card.Title>
-          <Card.Description>
+        <CardHeader>
+          <CardTitle>Seu Nome</CardTitle>
+          <CardDescription>
             Por favor coloque seu nome completo ou o nome que esteja confortável para mostrar.
-          </Card.Description>
-        </Card.Header>
-        <Card.Content>
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="name">
               Name
@@ -94,8 +94,8 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
               <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
             )}
           </div>
-        </Card.Content>
-        <Card.Footer>
+        </CardContent>
+        <CardFooter>
           <button
             type="submit"
             className={cn(buttonVariants(), className)}
@@ -106,7 +106,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             )}
             <span>Salvar</span>
           </button>
-        </Card.Footer>
+        </CardFooter>
       </Card>
     </form>
   )

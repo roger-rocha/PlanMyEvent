@@ -9,8 +9,11 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {Icons} from "@/components/icons";
-import {Card, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Title} from "@tremor/react";
-import {formatDate} from "@/components/event-item";
+import {TableParticipant} from "@/components/tableParticipant";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Overview} from "@/components/chart";
+import {Resumo} from "@/components/chart2";
+
 
 async function getEventForUser(eventId: Event["id"], userId: User["id"]) {
   return await db.event.findFirst({
@@ -24,19 +27,6 @@ async function getEventForUser(eventId: Event["id"], userId: User["id"]) {
 interface EventPageProps {
   params: { eventId: string }
 }
-
-const colors: { [key: string]: string } = {
-  "CONFIRMED": "bg-green-300 text-green-600 p-2 rounded-full",
-  "UNCONFIRMED": "bg-yellow-300 text-yellow-600 p-2 rounded-full",
-  "DECLINED": "bg-red-300 text-red-600 p-2 rounded-full",
-};
-
-const status: { [key: string]: string } = {
-  "CONFIRMED": "CONFIRMADO",
-  "UNCONFIRMED": "INDECISO",
-  "DECLINED": "RECUSADO",
-}
-
 
 async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Event["authorId"]) {
   return await db.eventParticipant.findMany({
@@ -59,6 +49,19 @@ async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Even
   })
 }
 
+
+async function getTotalParticipantsByStatus(eventId: Event["id"], authorId: Event["authorId"], status: "CONFIRMED" | "UNCONFIRMED" | "DECLINED") {
+  return await db.eventParticipant.count({
+    where: {
+      eventId: eventId,
+      event: {
+        authorId: authorId
+      },
+      status: status,
+    },
+  })
+}
+
 export default async function EventReportPage({params}: EventPageProps) {
   const user = await getCurrentUser()
 
@@ -73,6 +76,9 @@ export default async function EventReportPage({params}: EventPageProps) {
   }
 
   const eventParticipant = await getEventsParticipantsForUser(event.id, event.authorId);
+  const totalConfirmed = await getTotalParticipantsByStatus(event.id, event.authorId, "CONFIRMED");
+  const totalUnconfirmed = await getTotalParticipantsByStatus(event.id, event.authorId, "UNCONFIRMED");
+  const totalDeclined = await getTotalParticipantsByStatus(event.id, event.authorId, "DECLINED");
 
   return (
     <section className="mob:p-3 flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
@@ -89,44 +95,67 @@ export default async function EventReportPage({params}: EventPageProps) {
       </div>
       <div
         id="form-event"
-        className="flex max-w-[980px] flex-col items-center"
+        className="flex max-w-[1200px] flex-col items-center"
       >
         <h1
-          className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+          className="mb-10 text-center text-xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-4xl lg:text-3xl">
           Relatório do {event.title}
         </h1>
-
-        <Card>
-          <div className="flex flex-row">
-            <Icons.users className="w-5 h-5 mr-3"></Icons.users>
-            <Title>Lista de Convidados</Title>
+        <div className="flex flex-row">
+          <div className="flex flex-col mr-5">
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="h-[100px] border-t-emerald-300 border-t-4 ring-gray-200 shadow ring-1 ">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-md font-medium">
+                    Confirmados
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-row">
+                  <Icons.check className="h-8 w-8 p-1  mr-3 bg-emerald-300 text-green-800 rounded-lg" /><div className="text-2xl font-bold">{totalConfirmed}</div>
+                </CardContent>
+              </Card>
+              <Card className="h-[100px] border-t-amber-400 border-t-4">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-md font-medium">
+                    Indecisos
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-row">
+                  <Icons.timer className="bg-amber-400 text-yellow-800 h-8 w-8 p-1  mr-3 rounded-lg" /><div className="text-2xl font-bold">{totalUnconfirmed}</div>
+                </CardContent>
+              </Card>
+              <Card className="h-[100px]  border-t-red-400 border-t-4">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-md font-medium">Recusados</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-row">
+                  <Icons.close className="bg-red-400 text-red-800 h-8 w-8 p-1 rounded-lg mr-3 " /> <div className="text-2xl font-bold">{totalDeclined}</div>
+                </CardContent>
+              </Card>
+            </div>
+            <Card className="w-[600px] mt-5">
+              <CardHeader>
+                <CardTitle>Overview</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Overview/>
+              </CardContent>
+            </Card>
+            <Card className="w-[600px] mt-5">
+              <CardHeader>
+                <CardTitle>Resumo</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Resumo/>
+              </CardContent>
+            </Card>
           </div>
-          <Table className="mt-5">
-            <TableHead>
-              <TableRow>
-                <TableHeaderCell>Nome</TableHeaderCell>
-                <TableHeaderCell>Mensagem</TableHeaderCell>
-                <TableHeaderCell>Status</TableHeaderCell>
-                <TableHeaderCell>Registro em</TableHeaderCell>
-              </TableRow>
-            </TableHead>
 
-            <TableBody>
-              {eventParticipant.map((item) => (
-                <TableRow key={item.name}>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.message}</TableCell>
-                  <TableCell>
-                    <span className={colors[item.status]}>
-                      {status[item.status]}
-                    </span>
-                  </TableCell>
-                  <TableCell align={"center"}>{formatDate(item.createdAt.toString())}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Card>
+          <TableParticipant eventParticipant={eventParticipant} />
+        </div>
+
+
+
       </div>
     </section>
   )

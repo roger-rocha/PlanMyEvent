@@ -43,6 +43,7 @@ module.exports = {
     require("tailwindcss-animate"),
     require("@tailwindcss/typography"),
     require("@tailwindcss/line-clamp"),
-    require('tailwind-scrollbar')
+    require('tailwind-scrollbar'),
+    require("flowbite/plugin")
   ],
 }

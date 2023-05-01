@@ -1,6 +1,6 @@
-import { DashboardHeader } from "@/components/header"
-import { DashboardShell } from "@/components/shell"
-import { Card } from "@/components/ui/card"
+import {DashboardHeader} from "@/components/header"
+import {DashboardShell} from "@/components/shell"
+import {Skeleton} from "@/components/ui/skeleton";
 
 export default function DashboardSettingsLoading() {
   return (
@@ -10,8 +10,7 @@ export default function DashboardSettingsLoading() {
         text="Gerencie a sua conta."
       />
       <div className="grid gap-10">
-        <Card.Skeleton />
-        <Card.Skeleton />
+        <Skeleton />
       </div>
     </DashboardShell>
   )

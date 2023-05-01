@@ -9,6 +9,8 @@ import {formatISO} from "date-fns";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "DELETE") {
+
+    console.log(req.query)
     try {
       await db.event.delete({
         where: {
@@ -18,6 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
       return res.status(204).end()
     } catch (error) {
+      console.log(error)
       return res.status(500).end()
     }
   }

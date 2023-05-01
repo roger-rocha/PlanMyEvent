@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { toast } from "@/hooks/use-toast"
+import {toast} from "@/hooks/use-toast"
 
-import { UserSubscriptionPlan } from "types"
-import { cn, formatDate } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { buttonVariants } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import {UserSubscriptionPlan} from "types"
+import {cn, formatDate} from "@/lib/utils"
+import {Icons} from "@/components/icons"
+import {buttonVariants} from "@/components/ui/button"
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 
 interface BillingFormProps extends React.HTMLAttributes<HTMLFormElement> {
   subscriptionPlan: UserSubscriptionPlan & {
@@ -49,14 +49,14 @@ export function BillingForm({
   return (
     <form className={cn(className)} onSubmit={onSubmit} {...props}>
       <Card>
-        <Card.Header>
-          <Card.Title>Plan</Card.Title>
-          <Card.Description>
+        <CardHeader>
+          <CardTitle>Plan</CardTitle>
+          <CardDescription>
             Você está atualmente no plano <strong>{subscriptionPlan.name}</strong>{"."}
-          </Card.Description>
-        </Card.Header>
-        <Card.Content>{subscriptionPlan.description}</Card.Content>
-        <Card.Footer className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
+          </CardDescription>
+        </CardHeader>
+        <CardContent>{subscriptionPlan.description}</CardContent>
+        <CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
           <button
             type="submit"
             className={cn(buttonVariants())}
@@ -75,7 +75,7 @@ export function BillingForm({
               {formatDate(subscriptionPlan.stripeCurrentPeriodEnd)}.
             </p>
           ) : null}
-        </Card.Footer>
+        </CardFooter>
       </Card>
     </form>
   )

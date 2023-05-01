@@ -108,7 +108,7 @@ model EventParticipant {
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
 
-  event Event @relation(fields: [eventId], references: [id])
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
   @@map(name: "eventsParticipants")
 }
 

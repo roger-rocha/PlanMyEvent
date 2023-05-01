@@ -9,7 +9,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {toast} from "@/hooks/use-toast";
 import {Icons} from "@/components/icons";
-import Confetti from "react-confetti";
+import Confetti from "react-dom-confetti";
 import {Textarea} from "@/components/ui/textarea";
 import {formatDate} from "@/components/event-item";
 
@@ -34,10 +34,11 @@ export function EventInvitation({event}: EventProps) {
     }
   });
   const [showConfetti, setShowConfetti] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   const router = useRouter();
 
   async function onSubmit(data: FormEventInvitationData) {
-    console.log(data)
     const response = await fetch(`/api/invitation/${event.id}`, {
       method: "POST",
       headers: {
@@ -59,12 +60,10 @@ export function EventInvitation({event}: EventProps) {
     }
 
 
-    router.refresh()
+    setSubmitted(true);
+    localStorage.setItem('formEventInvitationSubmitted', 'true');
 
-    setShowConfetti(true);
-
-    setTimeout(() => setShowConfetti(false), 5000);
-
+    if (data.status === "CONFIRMED") setShowConfetti(true);
 
     return (
       toast({
@@ -79,16 +78,35 @@ export function EventInvitation({event}: EventProps) {
     };
   }, [watch]);
 
+
+  if (submitted) {
+    return (
+      <section className="container mx-aut grid items-start">
+        <Confetti
+          config={{elementCount: 1000, spread: 360, duration: 5000}}
+          active={true}/>
+        <div className="mob:p-3 container mx-auto max-w-[570px] flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
+          <h1
+            className="mb-10 text-left text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-3xl">
+            Obrigado!
+          </h1>
+          <h2
+            className="mb-10 text-left max-w-full text-2xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-3xl lg:text-4xl">
+            Sua confirmação foi salva.
+          </h2>
+        </div>
+      </section>
+    );
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="container mx-aut grid items-start">
-      <section className="mob:p-3 container mx-auto max-w-[570px] flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
-        {showConfetti && <Confetti/>}
+      <section className="mob:p-3 container mx-auto max-w-[620px] flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
         <div
           id="form-event"
           className="container w-full flex flex-col items-center"
         >
           <h1
-            className="mb-10 text-left text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
+            className="mb-10 text-left text-xl font-extrabold leading-tight tracking-tighter sm:text-xl md:text-2xl lg:text-5xl">
             {event.title}
           </h1>
           <h2
