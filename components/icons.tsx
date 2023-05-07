@@ -25,12 +25,14 @@ import {
   Pizza,
   Plus,
   Search,
+  Send,
   Settings,
   TimerReset,
   Trash2,
   Twitter,
   User,
   Users,
+  UserX,
   X,
 } from "lucide-react"
 
@@ -63,8 +65,10 @@ export const Icons = {
   timer: TimerReset,
   users: Users,
   calendar: Calendar,
+  userx: UserX,
   report: ClipboardSignature,
   eye: Eye,
+  send: Send,
   pencil: Pencil,
   filter: Filter,
   google : ({ ...props }: LucideProps) => (

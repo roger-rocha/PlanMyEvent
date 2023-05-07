@@ -12,6 +12,8 @@ import {Icons} from "@/components/icons";
 import Confetti from "react-dom-confetti";
 import {Textarea} from "@/components/ui/textarea";
 import {formatDate} from "@/components/event-item";
+import {Metadata} from "next";
+import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 
 
 interface EventProps {
@@ -24,6 +26,10 @@ type FormEventInvitationData = {
   status: string;
 }
 
+export const metadata: Metadata = {
+  title: "Convite",
+  description: "Você foi convidado para um evento.",
+}
 
 export function EventInvitation({event}: EventProps) {
   const {register, handleSubmit, watch, setValue} = useForm<FormEventInvitationData>({
@@ -98,60 +104,62 @@ export function EventInvitation({event}: EventProps) {
       </section>
     );
   }
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="container mx-aut grid items-start">
-      <section className="mob:p-3 container mx-auto max-w-[620px] flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
-        <div
-          id="form-event"
-          className="container w-full flex flex-col items-center"
-        >
-          <h1
-            className="mb-10 text-left text-xl font-extrabold leading-tight tracking-tighter sm:text-xl md:text-2xl lg:text-5xl">
-            {event.title}
-          </h1>
-          <h2
-            className="mb-10 text-left max-w-full text-2xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-3xl lg:text-4xl">
-            Data: {formatDate(event.dateEvent.toString())}
-          </h2>
-          <h3
-            className="mb-10 text-left break-words max-w-full text-xl font-extrabold leading-tight tracking-tighter sm:text-1xl md:text-2xl lg:text-3xl">
-            Detalhes: {event.details}
-          </h3>
-          <h4
-            className="mb-10 text-left max-w-full font-bold leading-tight tracking-tighter sm:text-base md:text-lg lg:text-xl">
-            Preencha os campos abaixo
-          </h4>
-          <div className="grid w-full items-center gap-1.5">
-            <Label>Seu nome</Label>
-            <Input
-              placeholder="Roger Rocha"
-              {...register("name")}>
 
-            </Input>
-          </div>
-          <div className="mt-8 grid w-full mob:w-full gap-1.5">
-            <Label>Mensagem</Label>
-            <Textarea
-              placeholder="Vou levar pão de alho"
-              {...register("message")}
-            >
-            </Textarea>
-          </div>
-          <div className="flex flex-row mt-8 p-5 gap-4">
-            <Button type="button" size="lg" variant="green" onClick={() => setValue("status", "CONFIRMED")}>
-              <Icons.party className="w-5 h-5 mr-3"></Icons.party> CONFIRMO
-            </Button>
-            <Button type="button" size="lg" variant="yellow" onClick={() => setValue("status", "UNCONFIRMED")}>
-              <Icons.timer className="w-5 h-5 mr-3"></Icons.timer> INDECISO
-            </Button>
-            <Button type="button" size="lg" variant="destructive" onClick={() => setValue("status", "DECLINED")}>
-              <Icons.close className="w-5 h-5 mr-3"></Icons.close> RECUSO
-            </Button>
-          </div>
-          <Button type="submit" size="lg" className="mt-8">
-            <Icons.archive className="w-5 h-5 mr-3"></Icons.archive> SALVAR
-          </Button>
-        </div>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+
+      <section className="container mx-auto px-4 py-6">
+        <Card className="max-w-lg mx-auto">
+          <CardHeader>
+            <CardTitle>
+              <h1 className="text-2xl font-extrabold">{event.title}</h1>
+            </CardTitle>
+
+            <CardDescription>
+
+              <h2 className="text-xl font-extrabold"> Data: {formatDate(event.dateEvent.toString())}</h2>
+              <h3 className="text-lg font-extrabold"> Detalhes: {event.details}</h3>
+
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+              <h4 className="font-bold">Preencha os campos abaixo</h4>
+              <div className="grid gap-2">
+                <Label>Seu nome</Label>
+                <Input
+                  placeholder="Roger Rocha"
+                  {...register("name")}>
+                </Input>
+              </div>
+
+              <div className="grid gap-2">
+                <Label>Mensagem</Label>
+                <Textarea
+                  placeholder="Vou levar pão de alho"
+                  {...register("message")}
+                >
+                </Textarea>
+              </div>
+
+              <div className="flex flex-row mt-5 justify-between">
+                <Button type="button" variant="green" onClick={() => setValue("status", "CONFIRMED")}>
+                  <Icons.party className="w-5 h-5 mr-3"></Icons.party> Confirmar
+                </Button>
+                <Button type="button" variant="yellow" onClick={() => setValue("status", "UNCONFIRMED")}>
+                  <Icons.timer className="w-5 h-5 mr-3"></Icons.timer> Aguardar
+                </Button>
+                <Button type="button" variant="destructive" onClick={() => setValue("status", "DECLINED")}>
+                  <Icons.close className="w-5 h-5 mr-3"></Icons.close> Recusar
+                </Button>
+              </div>
+
+              <CardFooter className="w-full mt-8">
+                <Button type="submit" className="w-full">
+                  <Icons.send className="w-5 h-5 mr-3"></Icons.send> Responder
+                </Button>
+              </CardFooter>
+          </CardContent>
+        </Card>
       </section>
     </form>
   )

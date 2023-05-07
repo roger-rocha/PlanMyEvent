@@ -68,7 +68,6 @@ specifiers:
   eslint-config-prettier: ^8.8.0
   eslint-plugin-react: ^7.32.2
   eslint-plugin-tailwindcss: ^3.11.0
-  flowbite: ^1.6.5
   flowbite-react: ^0.4.4
   husky: ^8.0.3
   lucide-react: ^0.92.0
@@ -167,8 +166,7 @@ dependencies:
   cmdk: 0.1.22_bb2bxwco6ptpubzwpazr52qf6i
   contentlayer: 0.2.9
   date-fns: 2.30.0
-  flowbite: 1.6.5
-  flowbite-react: 0.4.4_nip7fp3zovd64me3xtw7v52p2e
+  flowbite-react: 0.4.4_5zaxlhq3tigkzb66htdpqdeica
   lucide-react: 0.92.0_sh5qlbywuemxd2y3xkrw2y2kr4
   next: 13.3.4_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.22.1_c6fpg6plbkbn42ow3ifa6vnrmi
@@ -1555,10 +1553,6 @@ packages:
 
   /@panva/hkdf/1.1.1:
     resolution: {integrity: sha512-dhPeilub1NuIG0X5Kvhh9lH4iW3ZsHlnzwgwbOlgwQ2wG1IqFzsgHqmKPk3WzsdWAeaxKJxgM0+W433RmN45GA==}
-    dev: false
-
-  /@popperjs/core/2.11.7:
-    resolution: {integrity: sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==}
     dev: false
 
   /@prisma/client/4.13.0_prisma@4.13.0:
@@ -5373,7 +5367,7 @@ packages:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
 
-  /flowbite-react/0.4.4_nip7fp3zovd64me3xtw7v52p2e:
+  /flowbite-react/0.4.4_5zaxlhq3tigkzb66htdpqdeica:
     resolution: {integrity: sha512-cDGtzRp8Ca6rOooNUlDzI7NwAQqzRFYENQ5tI5kRlgobUITxzCgPSv+S1laBlSyrHzlvaneBy4kkX3HrMtEn0A==}
     peerDependencies:
       flowbite: ^1
@@ -5383,19 +5377,11 @@ packages:
     dependencies:
       '@floating-ui/react': 0.20.1_biqbaboplfbrettd7655fr4n2y
       classnames: 2.3.2
-      flowbite: 1.6.5
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-icons: 4.8.0_react@18.2.0
       react-indiana-drag-scroll: 2.2.0_biqbaboplfbrettd7655fr4n2y
       tailwindcss: 3.3.2
-    dev: false
-
-  /flowbite/1.6.5:
-    resolution: {integrity: sha512-eI4h3pIRI9d7grlYq14r0A01KUtw7189sPLLx/O2i7JyPEWpbleScfYuEc48XTeNjk1xxm/JHgZkD9kjyOWAlA==}
-    dependencies:
-      '@popperjs/core': 2.11.7
-      mini-svg-data-uri: 1.4.4
     dev: false
 
   /for-each/0.3.3:
@@ -7014,11 +7000,6 @@ packages:
     resolution: {integrity: sha512-I9jwMn07Sy/IwOj3zVkVik2JTvgpaykDZEigL6Rx6N9LbMywwUSMtxET+7lVoDLLd3O3IXwJwvuuns8UB/HeAg==}
     engines: {node: '>=4'}
     dev: true
-
-  /mini-svg-data-uri/1.4.4:
-    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
-    hasBin: true
-    dev: false
 
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}

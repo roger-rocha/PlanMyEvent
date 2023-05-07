@@ -8,7 +8,7 @@ import {UserAuthForm} from "@/components/user-auth-form"
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Login to your account",
+  description: "Entre na sua conta",
 }
 
 export default function LoginPage() {
