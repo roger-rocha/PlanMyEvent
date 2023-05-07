@@ -1,4 +1,3 @@
-import {cache} from "react"
 import {redirect} from "next/navigation"
 import {User} from "@prisma/client"
 
@@ -17,7 +16,7 @@ export const metadata = {
   title: "Dashboard",
 }
 
-const getEventsForUser = cache(async (userId: User["id"]) => {
+const getEventsForUser = async (userId: User["id"]) => {
   return await db.event.findMany({
     where: {
       authorId: userId,
@@ -32,7 +31,7 @@ const getEventsForUser = cache(async (userId: User["id"]) => {
       updatedAt: "desc",
     },
   })
-})
+}
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()

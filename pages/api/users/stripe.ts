@@ -1,19 +1,20 @@
-import { NextApiRequest, NextApiResponse } from "next"
-import { getServerSession } from "next-auth/next"
+import {NextApiRequest, NextApiResponse} from "next"
+import {getServerSession} from "next-auth/next"
 
-import { proPlan } from "@/config/subscriptions"
-import { withAuthentication } from "@/lib/api-middlewares/with-authentication"
-import { withMethods } from "@/lib/api-middlewares/with-methods"
-import { authOptions } from "@/lib/auth"
-import { stripe } from "@/lib/stripe"
-import { getUserSubscriptionPlan } from "@/lib/subscription"
-import { absoluteUrl } from "@/lib/utils"
+import {proPlan} from "@/config/subscriptions"
+import {withAuthentication} from "@/lib/api-middlewares/with-authentication"
+import {withMethods} from "@/lib/api-middlewares/with-methods"
+import {authOptions} from "@/lib/auth"
+import {stripe} from "@/lib/stripe"
+import {getUserSubscriptionPlan} from "@/lib/subscription"
+import {absoluteUrl} from "@/lib/utils"
 
 const billingUrl = absoluteUrl("/dashboard/billing")
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "GET") {
     try {
+      console.log("entrou aqui")
       const session = await getServerSession(req, res, authOptions)
       const user = session?.user
 
@@ -40,7 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         success_url: billingUrl,
         cancel_url: billingUrl,
         payment_method_types: ["card"],
-        mode: "subscription",
+        mode: "payment",
         billing_address_collection: "auto",
         customer_email: user.email,
         line_items: [

@@ -1,10 +1,10 @@
-import { Metadata } from "next"
+import {Metadata} from "next"
 import Link from "next/link"
 
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { buttonVariants } from "@/components/ui/button"
-import { UserAuthForm } from "@/components/user-auth-form"
+import {cn} from "@/lib/utils"
+import {Icons} from "@/components/icons"
+import {buttonVariants} from "@/components/ui/button"
+import {UserAuthForm} from "@/components/user-auth-form"
 
 export const metadata: Metadata = {
   title: "Login",
@@ -37,14 +37,6 @@ export default function LoginPage() {
           </p>
         </div>
         <UserAuthForm />
-        <p className="px-8 text-center text-sm text-slate-500 dark:text-slate-400">
-          <Link
-            href="/register"
-            className="hover:text-brand underline underline-offset-4"
-          >
-            Ainda não tem uma conta? Criar Conta
-          </Link>
-        </p>
       </div>
     </div>
   )

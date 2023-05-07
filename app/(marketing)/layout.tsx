@@ -1,10 +1,10 @@
 import Link from "next/link"
 
-import { marketingConfig } from "@/config/marketing"
-import { cn } from "@/lib/utils"
-import { MainNav } from "@/components/main-nav"
-import { SiteFooter } from "@/components/site-footer"
-import { buttonVariants } from "@/components/ui/button"
+import {marketingConfig} from "@/config/marketing"
+import {cn} from "@/lib/utils"
+import {MainNav} from "@/components/main-nav"
+import {SiteFooter} from "@/components/site-footer"
+import {buttonVariants} from "@/components/ui/button"
 
 interface MarketingLayoutProps {
   children: React.ReactNode
@@ -24,12 +24,6 @@ export default async function MarketingLayout({
               className={cn(buttonVariants({ size: "sm" }), "px-4")}
             >
               Login
-            </Link>
-            <Link
-              href="/register"
-              className={cn(buttonVariants({ size: "sm", variant: "outline" }), "px-4")}
-            >
-              Criar Conta
             </Link>
           </nav>
         </div>

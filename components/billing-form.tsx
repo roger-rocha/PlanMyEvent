@@ -31,8 +31,8 @@ export function BillingForm({
 
     if (!response?.ok) {
       return toast({
-        title: "Something went wrong.",
-        description: "Please refresh the page and try again.",
+        title: "Ops aconteceu algum erro.",
+        description: "Por favor recarregue a página e tente novamente.",
         variant: "destructive",
       })
     }

@@ -1,19 +1,17 @@
 "use client"
 
 import * as React from "react"
-import { useSearchParams } from "next/navigation"
-import { toast } from "@/hooks/use-toast"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { signIn } from "next-auth/react"
-import { useForm } from "react-hook-form"
+import {useSearchParams} from "next/navigation"
+import {toast} from "@/hooks/use-toast"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {signIn} from "next-auth/react"
+import {useForm} from "react-hook-form"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
-import { userAuthSchema } from "@/lib/validations/auth"
-import { Icons } from "@/components/icons"
-import { buttonVariants } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import {cn} from "@/lib/utils"
+import {userAuthSchema} from "@/lib/validations/auth"
+import {Icons} from "@/components/icons"
+import {buttonVariants} from "@/components/ui/button"
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -29,6 +27,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   })
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false)
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false)
   const searchParams = useSearchParams()
 
   async function onSubmit(data: FormData) {
@@ -45,7 +44,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     if (!signInResult?.ok) {
       return toast({
         title: "Something went wrong.",
-        description: "Your sign in request failed. Please try again.",
+        description: "O seu login falhou. Tente novamente.",
         variant: "destructive",
       })
     }
@@ -100,6 +99,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         type="button"
         className={cn(buttonVariants({ variant: "default" }))}
         onClick={() => {
+          setIsGoogleLoading(true)
+          signIn("google")
+        }}
+        disabled={isLoading || isGoogleLoading}
+      >
+        {isGoogleLoading ? (
+          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        ) : (
+          <Icons.google className="mr-2 h-4 w-4" />
+        )}{" "}
+        Google
+      </button>
+      <button
+        type="button"
+        className={cn(buttonVariants({ variant: "default" }))}
+        onClick={() => {
           setIsGitHubLoading(true)
           signIn("github")
         }}
@@ -112,6 +127,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         )}{" "}
         Github
       </button>
+
     </div>
   )
 }
