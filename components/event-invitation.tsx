@@ -45,6 +45,13 @@ export function EventInvitation({event}: EventProps) {
   const router = useRouter();
 
   async function onSubmit(data: FormEventInvitationData) {
+    if(!data.name) {
+        return toast({
+            title: "Por favor, informe seu nome.",
+            variant: "destructive",
+        })
+    }
+
     const response = await fetch(`/api/invitation/${event.id}`, {
       method: "POST",
       headers: {
@@ -87,7 +94,7 @@ export function EventInvitation({event}: EventProps) {
 
   if (submitted) {
     return (
-      <section className="container mx-aut grid items-start">
+      <section className="mob:w-full  mob:min-h-screen overflow-hidden">
         <Confetti
           config={{elementCount: 1000, spread: 360, duration: 5000}}
           active={true}/>
@@ -108,21 +115,21 @@ export function EventInvitation({event}: EventProps) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
 
-      <section className="container mx-auto px-4 py-6">
-        <Card className="max-w-lg mx-auto">
+      <section className="mob:w-full  mob:min-h-screen overflow-hidden">
+        <Card className="max-w-lg mob:w-full mob:min-h-screen overflow-hidden">
           <CardHeader>
             <CardTitle>
-              <h1 className="text-2xl font-extrabold">{event.title}</h1>
+              <h1 className="text-2xl mob:text-xl font-extrabold">{event.title}</h1>
             </CardTitle>
 
             <CardDescription>
 
-              <h2 className="text-xl font-extrabold"> Data: {formatDate(event.dateEvent.toString())}</h2>
+              <h2 className="text-lg font-extrabold"> Data: {formatDate(event.dateEvent.toString())}</h2>
               <h3 className="text-lg font-extrabold"> Detalhes: {event.details}</h3>
 
             </CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-4">
+          <CardContent className="w-full h-full grid gap-4">
               <h4 className="font-bold">Preencha os campos abaixo</h4>
               <div className="grid gap-2">
                 <Label>Seu nome</Label>
@@ -141,11 +148,11 @@ export function EventInvitation({event}: EventProps) {
                 </Textarea>
               </div>
 
-              <div className="flex flex-row mt-5 justify-between">
+              <div className="grid gap-4 mt-3">
                 <Button type="button" variant="green" onClick={() => setValue("status", "CONFIRMED")}>
                   <Icons.party className="w-5 h-5 mr-3"></Icons.party> Confirmar
                 </Button>
-                <Button type="button" variant="yellow" onClick={() => setValue("status", "UNCONFIRMED")}>
+                <Button type="button"  variant="yellow" onClick={() => setValue("status", "UNCONFIRMED")}>
                   <Icons.timer className="w-5 h-5 mr-3"></Icons.timer> Aguardar
                 </Button>
                 <Button type="button" variant="destructive" onClick={() => setValue("status", "DECLINED")}>
@@ -153,12 +160,12 @@ export function EventInvitation({event}: EventProps) {
                 </Button>
               </div>
 
-              <CardFooter className="w-full mt-8">
-                <Button type="submit" className="w-full">
-                  <Icons.send className="w-5 h-5 mr-3"></Icons.send> Responder
-                </Button>
-              </CardFooter>
           </CardContent>
+          <CardFooter className="w-full mt-8">
+            <Button type="submit" className="w-full">
+              <Icons.send className="w-5 h-5 mr-3"></Icons.send> Responder
+            </Button>
+          </CardFooter>
         </Card>
       </section>
     </form>
