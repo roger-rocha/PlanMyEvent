@@ -1,5 +1,5 @@
 import Link from "next/link"
-import {Event} from "@prisma/client"
+import {Event} from ".prisma/client"
 import {Skeleton} from "@/components/ui/skeleton"
 import {EventOperations} from "@/components/event-operations";
 

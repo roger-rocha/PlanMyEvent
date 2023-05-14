@@ -1,6 +1,5 @@
 import {notFound, redirect} from "next/navigation"
-import {Event, User} from "@prisma/client"
-
+import {Event, User} from ".prisma/client";
 import {authOptions} from "@/lib/auth"
 import {db} from "@/lib/db"
 import {getCurrentUser} from "@/lib/session"
@@ -9,21 +8,25 @@ import Link from "next/link";
 import {cn} from "@/lib/utils";
 import {buttonVariants} from "@/components/ui/button";
 import {Icons} from "@/components/icons";
-import {TableParticipant} from "@/components/tableParticipant";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {Overview} from "@/components/chart";
 import {Resumo} from "@/components/chart2";
 import {EmptyPlaceholder} from "@/components/empty-placeholder";
 import {EventLinkButton} from "@/components/event-link-button";
+import {DataTable} from "@/components/table/components/data-table";
+import {z} from "zod";
+import {Task, taskSchema} from "@/components/table/data/schema";
+import {columns} from "@/components/table/components/column";
+import {formatDate} from "@/components/event-item";
 
 
 async function getEventForUser(eventId: Event["id"], userId: User["id"]) {
-  return await db.event.findFirst({
+  return db.event.findFirst({
     where: {
       id: eventId,
       authorId: userId,
     },
-  })
+  });
 }
 
 interface EventPageProps {
@@ -31,7 +34,7 @@ interface EventPageProps {
 }
 
 async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Event["authorId"]) {
-  return await db.eventParticipant.findMany({
+  return db.eventParticipant.findMany({
     where: {
       eventId: eventId,
       event: {
@@ -48,12 +51,12 @@ async function getEventsParticipantsForUser(eventId: Event["id"], authorId: Even
     orderBy: {
       updatedAt: "desc",
     },
-  })
+  });
 }
 
 
 async function getTotalParticipantsByStatus(eventId: Event["id"], authorId: Event["authorId"], status: "CONFIRMED" | "UNCONFIRMED" | "DECLINED") {
-  return await db.eventParticipant.count({
+  return db.eventParticipant.count({
     where: {
       eventId: eventId,
       event: {
@@ -61,7 +64,7 @@ async function getTotalParticipantsByStatus(eventId: Event["id"], authorId: Even
       },
       status: status,
     },
-  })
+  });
 }
 
 export default async function EventReportPage({params}: EventPageProps) {
@@ -82,6 +85,19 @@ export default async function EventReportPage({params}: EventPageProps) {
   const totalUnconfirmed = await getTotalParticipantsByStatus(event.id, event.authorId, "UNCONFIRMED");
   const totalDeclined = await getTotalParticipantsByStatus(event.id, event.authorId, "DECLINED");
 
+  const arrayParticipant : Task[] = [];
+  for (const participant of eventParticipant) {
+    arrayParticipant.push({
+      id: participant.id,
+      name: participant.name,
+      message: participant.message,
+      status: participant.status,
+      created_at: formatDate(participant.createdAt.toString())
+    });
+  }
+  const data = z.array(taskSchema).parse(arrayParticipant)
+  console.log(data)
+
   return (
     <section className="mob:p-3 flex flex-col items-center gap-6 pt-6 pb-8 md:py-10">
       <div className="flex items-center space-x-10">
@@ -97,7 +113,7 @@ export default async function EventReportPage({params}: EventPageProps) {
       </div>
       <div
         id="form-event"
-        className="flex max-w-[1200px] flex-col items-center"
+        className="flex max-w-lg flex-col items-center"
       >
         <h1
           className="mb-10 text-center text-xl font-extrabold leading-tight tracking-tighter sm:text-2xl md:text-4xl lg:text-3xl">
@@ -114,17 +130,17 @@ export default async function EventReportPage({params}: EventPageProps) {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-row">
-                    <Icons.check className="h-8 w-8 p-1  mr-3 bg-emerald-300 text-green-800 rounded-lg" /><div className="text-2xl font-bold">{totalConfirmed}</div>
+                    <Icons.checkCircle className="h-8 w-8 p-1  mr-3 bg-emerald-300 text-green-800 rounded-lg" /><div className="text-2xl font-bold">{totalConfirmed}</div>
                   </CardContent>
                 </Card>
                 <Card className="h-[100px] border-t-amber-400 border-t-4">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-md font-medium">
-                      Indecisos
+                      Indefinidos
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-row">
-                    <Icons.timer className="bg-amber-400 text-yellow-800 h-8 w-8 p-1  mr-3 rounded-lg" /><div className="text-2xl font-bold">{totalUnconfirmed}</div>
+                    <Icons.help className="bg-amber-400 text-yellow-800 h-8 w-8 p-1  mr-3 rounded-lg" /><div className="text-2xl font-bold">{totalUnconfirmed}</div>
                   </CardContent>
                 </Card>
                 <Card className="h-[100px]  border-t-red-400 border-t-4">
@@ -132,7 +148,7 @@ export default async function EventReportPage({params}: EventPageProps) {
                     <CardTitle className="text-md font-medium">Recusados</CardTitle>
                   </CardHeader>
                   <CardContent className="flex flex-row">
-                    <Icons.close className="bg-red-400 text-red-800 h-8 w-8 p-1 rounded-lg mr-3 " /> <div className="text-2xl font-bold">{totalDeclined}</div>
+                    <Icons.xCircle className="bg-red-400 text-red-800 h-8 w-8 p-1 rounded-lg mr-3 " /> <div className="text-2xl font-bold">{totalDeclined}</div>
                   </CardContent>
                 </Card>
               </div>
@@ -153,7 +169,9 @@ export default async function EventReportPage({params}: EventPageProps) {
                 </CardContent>
               </Card>
             </div>
-            <TableParticipant eventParticipant={eventParticipant} />
+
+            <DataTable columns={columns} data={data}/>
+            {/*<TableParticipant eventParticipant={eventParticipant} />*/}
           </div>
         ) : (
           <EmptyPlaceholder>

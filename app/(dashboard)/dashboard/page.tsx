@@ -1,5 +1,5 @@
 import {redirect} from "next/navigation"
-import {User} from "@prisma/client"
+import {User} from ".prisma/client"
 
 import {authOptions} from "@/lib/auth"
 import {db} from "@/lib/db"

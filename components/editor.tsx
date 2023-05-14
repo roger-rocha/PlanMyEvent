@@ -2,19 +2,19 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { toast } from "@/hooks/use-toast"
+import {useRouter} from "next/navigation"
+import {toast} from "@/hooks/use-toast"
 import EditorJS from "@editorjs/editorjs"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Post } from "@prisma/client"
-import { useForm } from "react-hook-form"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {Post} from ".prisma/client"
+import {useForm} from "react-hook-form"
 import TextareaAutosize from "react-textarea-autosize"
 import * as z from "zod"
 
-import { cn } from "@/lib/utils"
-import { postPatchSchema } from "@/lib/validations/post"
-import { Icons } from "@/components/icons"
-import { buttonVariants } from "@/components/ui/button"
+import {cn} from "@/lib/utils"
+import {postPatchSchema} from "@/lib/validations/post"
+import {Icons} from "@/components/icons"
+import {buttonVariants} from "@/components/ui/button"
 
 interface EditorProps {
   post: Pick<Post, "id" | "title" | "content" | "published">

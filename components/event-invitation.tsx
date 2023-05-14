@@ -1,5 +1,5 @@
 "use client"
-import {Event} from "@prisma/client"
+import {Event} from ".prisma/client"
 import {useForm} from "react-hook-form";
 import {useRouter} from "next/navigation";
 import {Button} from "@/components/ui/button";

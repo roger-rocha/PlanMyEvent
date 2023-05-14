@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import {redirect, useRouter} from "next/navigation"
 import {toast} from "@/hooks/use-toast"
-import {Event} from "@prisma/client"
+import {Event} from ".prisma/client"
 
 import {Icons} from "@/components/icons"
 import {

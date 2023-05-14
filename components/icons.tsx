@@ -5,6 +5,7 @@ import {
   Calendar,
   CalendarCheck2,
   Check,
+  CheckCircle2,
   ChevronLeft,
   ChevronRight,
   ClipboardSignature,
@@ -34,6 +35,7 @@ import {
   Users,
   UserX,
   X,
+  XCircle,
 } from "lucide-react"
 
 export type Icon = LucideIcon
@@ -71,6 +73,8 @@ export const Icons = {
   send: Send,
   pencil: Pencil,
   filter: Filter,
+  checkCircle: CheckCircle2,
+  xCircle: XCircle,
   google : ({ ...props }: LucideProps) => (
     <svg
       className='mr-2 h-4 w-4'
