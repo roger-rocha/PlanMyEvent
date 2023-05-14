@@ -1,5 +1,5 @@
 import Link from "next/link"
-import {Post} from ".prisma/client"
+import {Post} from "@prisma/client"
 
 import {formatDate} from "@/lib/utils"
 import {PostOperations} from "@/components/post-operations"

@@ -1,5 +1,5 @@
 import {notFound} from "next/navigation"
-import {Event} from ".prisma/client"
+import {Event} from "@prisma/client"
 
 import {db} from "@/lib/db"
 import {EventInvitation} from "@/components/event-invitation";
