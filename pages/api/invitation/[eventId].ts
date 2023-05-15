@@ -13,7 +13,6 @@ const eventCreateSchema = z.object({
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
-      console.log(req.body)
       const eventId = req.query.eventId as string
       const body = eventCreateSchema.parse(req.body)
       const event = await db.eventParticipant.create({

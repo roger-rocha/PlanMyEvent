@@ -102,7 +102,6 @@ export function EventEditor({event}: EventProps) {
 
 
   async function onSubmit(data: { title: string, details: string, dateEvent: string }) {
-    console.log(data)
 
 
     const response = await fetch(`/api/events/${event.id}`, {

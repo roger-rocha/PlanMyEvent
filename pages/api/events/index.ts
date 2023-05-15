@@ -1,12 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next"
-import { getServerSession } from "next-auth/next"
+import {NextApiRequest, NextApiResponse} from "next"
+import {getServerSession} from "next-auth/next"
 import * as z from "zod"
 
-import { withMethods } from "@/lib/api-middlewares/with-methods"
-import { authOptions } from "@/lib/auth"
-import { db } from "@/lib/db"
-import { RequiresProPlanError } from "@/lib/exceptions"
-import { getUserSubscriptionPlan } from "@/lib/subscription"
+import {withMethods} from "@/lib/api-middlewares/with-methods"
+import {authOptions} from "@/lib/auth"
+import {db} from "@/lib/db"
+import {RequiresProPlanError} from "@/lib/exceptions"
+import {getUserSubscriptionPlan} from "@/lib/subscription"
 
 const eventCreateSchema = z.object({
   title: z.string(),
@@ -62,8 +62,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
 
       const body = eventCreateSchema.parse(req.body)
-
-      console.log(body)
 
       const event = await db.event.create({
         data: {
