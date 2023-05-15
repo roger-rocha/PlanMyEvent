@@ -68,6 +68,7 @@ specifiers:
   eslint-config-prettier: ^8.8.0
   eslint-plugin-react: ^7.32.2
   eslint-plugin-tailwindcss: ^3.11.0
+  google-map-react: ^2.2.1
   husky: ^8.0.3
   lucide-react: ^0.214.0
   mdast-util-toc: ^6.1.1
@@ -165,6 +166,7 @@ dependencies:
   cmdk: 0.1.22_bb2bxwco6ptpubzwpazr52qf6i
   contentlayer: 0.2.9_typescript@4.7.4
   date-fns: 2.30.0
+  google-map-react: 2.2.1_biqbaboplfbrettd7655fr4n2y
   lucide-react: 0.214.0_react@18.2.0
   next: 13.4.2_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.22.1_yrqs2llmtjzbe4kv55fvier3p4
@@ -1019,6 +1021,12 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@googlemaps/js-api-loader/1.15.1:
+    resolution: {integrity: sha512-AsnEgNsB7S/VdrHGEQUaUM2e5tmjFGKBAfzR/AqO8O7TPq/jQGvoRw5liPBw4EMF38RDsHmKDV89q/X+qiUREQ==}
+    dependencies:
+      fast-deep-equal: 3.1.3
+    dev: false
+
   /@grpc/grpc-js/1.8.14:
     resolution: {integrity: sha512-w84maJ6CKl5aApCMzFll0hxtFNT6or9WwMslobKaqWUEf1K+zhlL43bSQhFreyYWIWR+Z0xnVFC1KtLm4ZpM/A==}
     engines: {node: ^8.13.0 || >=10.10.0}
@@ -1180,6 +1188,10 @@ packages:
     dependencies:
       jsbi: 4.3.0
       tslib: 2.5.0
+    dev: false
+
+  /@mapbox/point-geometry/0.1.0:
+    resolution: {integrity: sha512-6j56HdLTwWGO0fJPlrZtdU/B13q8Uwmo18Ck2GnGgN9PCFyKTZ3UbXeEdRFh18i9XQ92eH2VdtpJHpBD3aripQ==}
     dev: false
 
   /@mdx-js/esbuild/2.3.0_esbuild@0.15.18:
@@ -5556,6 +5568,21 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
     dev: true
+
+  /google-map-react/2.2.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-Dg8aexf5rNSmywj0XKQ5m4RNzVcWwKEM2BGDj5aPChD0um8ZRjB5Upcb/yg/i0oG1aES29asQ5+6BHVgrK5xGA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@googlemaps/js-api-loader': 1.15.1
+      '@mapbox/point-geometry': 0.1.0
+      eventemitter3: 4.0.7
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
 
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}

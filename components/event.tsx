@@ -25,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import {formatDate} from "@/components/event-item";
+import {Card, CardContent, CardFooter} from "@/components/ui/card";
 
 interface EventProps {
   event: Pick<Event, "id" | "title" | "details" | "dateEvent">
@@ -97,9 +99,12 @@ export function EventEditor({event}: EventProps) {
     }
   });
   const [date, setDate] = React.useState<Date | undefined>(new Date(event.dateEvent))
-  const[hour, setHour] = useState<string>(event.dateEvent.toString().substring(11, 16))
+  const hours = event.dateEvent.getUTCHours().toString().padStart(2, '0');
+  const minutes = event.dateEvent.getUTCMinutes().toString().padStart(2, '0');
+  const [hour, setHour] = useState<string>(`${hours}:${minutes}`)
   const router = useRouter()
 
+  console.log(formatDate(event.dateEvent.toString()))
 
   async function onSubmit(data: { title: string, details: string, dateEvent: string }) {
 
@@ -140,11 +145,11 @@ export function EventEditor({event}: EventProps) {
 
   useEffect(() => {
     if (date) {
-      if(hour){
+      if (hour) {
         let newDate = date.toISOString().slice(0, 11) + hour + ":00.000Z"
         console.log(newDate)
         setValue("dateEvent", newDate)
-      }else{
+      } else {
         setValue("dateEvent", date.toISOString())
       }
     }
@@ -173,73 +178,83 @@ export function EventEditor({event}: EventProps) {
             className="mb-10 text-center text-3xl font-extrabold leading-tight tracking-tighter sm:text-3xl md:text-5xl lg:text-6xl">
             Editando o seu evento
           </h1>
-          <div className="grid w-4/5 items-center gap-1.5">
-            <Label>Nome</Label>
-            <Input
-              type="text"
-              id="title"
-              placeholder="Festa do pijama"
-              defaultValue={event.title}
-              {...register("title")}>
+          <Card className="max-w-lg mob:w-full mob:min-h-screen overflow-hidden">
+            <CardContent className="w-full grid gap-4">
+              <div className="grid gap-2 mt-5">
+                <Label>Nome</Label>
+                <Input
+                  type="text"
+                  id="title"
+                  placeholder="Festa do pijama"
+                  defaultValue={event.title}
+                  {...register("title")}>
 
-            </Input>
-          </div>
-          <div className="mt-8 grid w-4/5 gap-1.5">
-            <Label>Detalhes sobre o evento</Label>
-            <Textarea
-              placeholder="Detalhes"
-              id="details"
-              defaultValue={event.details}
-              {...register("details")}
-            >
-            </Textarea>
-          </div>
+                </Input>
+              </div>
+              <div className="grid gap-2 mt-2">
+                <Label>Detalhes sobre o evento</Label>
+                <Textarea
+                  placeholder="Detalhes"
+                  id="details"
+                  defaultValue={event.details}
+                  {...register("details")}
+                >
+                </Textarea>
+              </div>
 
-          <div className="mt-8 w-4/5 grid">
-            <Label className="mb-1">Data e Horário</Label>
-            <div className="flex flex-row w-full gap-3">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-[280px] justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <Icons.calendar className="mr-2 h-4 w-4"/>
-                    {date ? format(date, "dd/MM/Y") : <span>Escolha uma data</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    locale={ptBR}
-                    onSelect={setDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <Select defaultValue={hour} onValueChange={(e) => {setHour(e)}}>
-                <SelectTrigger className="w-[180px]">
-                  <Icons.timer className="h-5 w-5"/> <SelectValue placeholder="Horário" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Horários</SelectLabel>
-                    {time.map((time) => (
-                      <SelectItem value={time.time}>{time.label}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+              <div className="mt-2 grid gap-2">
+                <Label className="mb-1">Data e Horário</Label>
+                <div className="flex flex-row gap-1">
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[280px] justify-start text-left font-normal",
+                          !date && "text-muted-foreground"
+                        )}
+                      >
+                        <Icons.calendar className="mr-2 h-4 w-4"/>
+                        {date ? format(date, "dd/MM/Y") : <span>Escolha uma data</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        locale={ptBR}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Select defaultValue={hour} onValueChange={(e) => {
+                    setHour(e)
+                  }}>
+                    <SelectTrigger className="w-[180px]">
+                      <Icons.timer className="h-5 w-5"/> <SelectValue placeholder="Horário"/>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Horários</SelectLabel>
+                        {time.map((time) => (
+                          <SelectItem value={time.time}>{time.label}</SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="w-full mt-5">
+              <Button type="submit" size="lg" className="w-full">
+                <Icons.archive className="mr-3 h-5 w-5"/> SALVAR
+              </Button>
+            </CardFooter>
+          </Card>
+
         </div>
-        <Button type="submit" size="lg" className="mt-3">
-          <Icons.archive className="mr-3 h-5 w-5"/> SALVAR
-        </Button>
+
       </section>
     </form>
   )
