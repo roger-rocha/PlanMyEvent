@@ -113,10 +113,10 @@ export function EventInvitation({event}: EventProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center">
 
-      <section className="mob:w-full  mob:min-h-screen overflow-hidden">
-        <Card className="max-w-lg mob:w-full mob:min-h-screen overflow-hidden">
+      <section className="mob:w-full lg:w-1/2 mob:min-h-screen overflow-hidden">
+        <Card className="lg:w-full mob:w-full  mob:min-h-screen overflow-hidden">
           <CardHeader>
             <CardTitle>
               <h1 className="text-2xl mob:text-xl font-extrabold">{event.title}</h1>
@@ -148,7 +148,7 @@ export function EventInvitation({event}: EventProps) {
                 </Textarea>
               </div>
 
-              <div className="grid gap-4 mt-3">
+              <div className="grid lg:grid-cols-3 gap-3 mob:gap-4 mt-3">
                 <Button type="button" variant="green" onClick={() => setValue("status", "CONFIRMED")}>
                   <Icons.party className="w-5 h-5 mr-3"></Icons.party> Confirmar
                 </Button>
