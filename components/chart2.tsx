@@ -2,61 +2,20 @@
 
 import {Bar, BarChart, ResponsiveContainer, XAxis, YAxis} from "recharts"
 
-const data = [
-  {
-    name: "Jan",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Feb",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Mar",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Apr",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "May",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jun",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Jul",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Aug",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Sep",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Oct",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Nov",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Dec",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-]
+export type chartData = {
+  name: string
+  total: number
+}
 
-export function Resumo() {
+
+interface ChartProps {
+  event: chartData[]
+}
+
+export function Visit({event}: ChartProps) {
   return (
     <ResponsiveContainer width="100%" height={225}>
-      <BarChart data={data}>
+      <BarChart data={event}>
         <XAxis
           dataKey="name"
           stroke="#888888"
@@ -69,9 +28,9 @@ export function Resumo() {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `$${value}`}
+          tickFormatter={(value) => `${value}`}
         />
-        <Bar dataKey="total" fill="#c026d3" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="total" fill="#9331c9" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   )

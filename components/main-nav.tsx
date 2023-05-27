@@ -2,13 +2,12 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useSelectedLayoutSegment } from "next/navigation"
+import {useSelectedLayoutSegment} from "next/navigation"
 
-import { MainNavItem } from "types"
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { MobileNav } from "@/components/mobile-nav"
+import {MainNavItem} from "types"
+import {siteConfig} from "@/config/site"
+import {cn} from "@/lib/utils"
+import {Icons} from "@/components/icons"
 
 interface MainNavProps {
   items?: MainNavItem[]
@@ -44,16 +43,12 @@ export function MainNav({ items, children }: MainNavProps) {
           ))}
         </nav>
       ) : null}
-      <button
-        className="flex items-center space-x-2 md:hidden"
-        onClick={() => setShowMobileMenu(!showMobileMenu)}
-      >
-        {showMobileMenu ? <Icons.close /> : <Icons.logo />}
-        <span className="font-bold">Menu</span>
-      </button>
-      {showMobileMenu && items && (
-        <MobileNav items={items}>{children}</MobileNav>
-      )}
+      <div className="relative z-20 grid gap-6 bg-transparent md:hidden">
+        <Link href="/" className="flex items-center space-x-2">
+          <Icons.logo />
+          <span className="font-bold">{siteConfig.name}</span>
+        </Link>
+      </div>
     </div>
   )
 }

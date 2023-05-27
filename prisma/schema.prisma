@@ -1,30 +1,29 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  @db.Text
+  session_state     String?
   createdAt         DateTime @default(now()) @map(name: "created_at")
   updatedAt         DateTime @default(now()) @map(name: "updated_at")
-
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -49,17 +48,14 @@ model User {
   sessions      Session[]
   posts         Post[]
   events        Event[]
-  createdAt         DateTime @default(now()) @map(name: "created_at")
-  updatedAt         DateTime @default(now()) @map(name: "updated_at")
-
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @default(now()) @map(name: "updated_at")
 
   stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-
 }
-
 
 model VerificationToken {
   identifier String
@@ -68,8 +64,6 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
-
-
 
 model Post {
   id        String   @id @default(cuid())
@@ -86,29 +80,42 @@ model Post {
 }
 
 model Event {
-  id        String   @id @default(cuid())
-  title     String
-  details   String @db.LongText()
-  dateEvent DateTime
-  createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
-  authorId  String
+  id               String             @id @default(cuid())
+  title            String
+  details          String             @db.LongText()
+  dateEvent        DateTime
+  createdAt        DateTime           @default(now()) @map(name: "created_at")
+  updatedAt        DateTime           @default(now()) @map(name: "updated_at")
+  authorId         String
   EventParticipant EventParticipant[]
+  EventVisit       EventVisit[]
 
   author User @relation(fields: [authorId], references: [id])
+
   @@map(name: "events")
 }
 
-model EventParticipant {
-  id String @id @default(cuid())
-  name String
-  message String @db.LongText()
-  eventId String
-  status StatusParticipant
+model EventVisit {
+  id        String   @id @default(cuid())
+  eventId   String
   createdAt DateTime @default(now()) @map(name: "created_at")
-  updatedAt DateTime @default(now()) @map(name: "updated_at")
 
   event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@map(name: "eventsVisits")
+}
+
+model EventParticipant {
+  id        String            @id @default(cuid())
+  name      String
+  message   String            @db.LongText()
+  eventId   String
+  status    StatusParticipant
+  createdAt DateTime          @default(now()) @map(name: "created_at")
+  updatedAt DateTime          @default(now()) @map(name: "updated_at")
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
   @@map(name: "eventsParticipants")
 }
 

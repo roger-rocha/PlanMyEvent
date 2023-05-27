@@ -13,6 +13,14 @@ async function getEventForParticipant(eventId: Event["id"]) {
   })
 }
 
+async function addVisitForEvent(eventId: Event["id"]) {
+  return await db.eventVisit.create({
+    data: {
+      eventId: eventId
+    }
+  });
+}
+
 interface EventPageProps {
   params: { eventId: string }
 }
@@ -22,13 +30,15 @@ export const metadata: Metadata = {
   description: "Você foi convidado para um evento.",
 }
 
-export default async function EventInvitationPage({ params }: EventPageProps) {
+export default async function EventInvitationPage({params}: EventPageProps) {
 
   const event = await getEventForParticipant(params.eventId)
 
   if (!event) {
     notFound()
   }
+
+  await addVisitForEvent(params.eventId);
 
   return (
     <EventInvitation

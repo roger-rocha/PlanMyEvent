@@ -18,6 +18,7 @@ import {Task, taskSchema} from "@/components/table/data/schema";
 import {columns} from "@/components/table/components/column";
 import {formatDate} from "@/components/event-item";
 import {format, subDays} from "date-fns";
+import {Visit} from "@/components/chart2";
 
 
 async function getEventForUser(eventId: Event["id"], userId: User["id"]) {
@@ -81,6 +82,18 @@ async function getTotalByDay(eventId: Event["id"], authorId: Event["authorId"], 
   });
 }
 
+async function getTotalByDayVisit(eventId: Event["id"], date: string): Promise<number> {
+  return db.eventVisit.count({
+    where: {
+      eventId: eventId,
+      createdAt: {
+        gte: `${date}T00:00:00.000Z`,
+        lte: `${date}T23:59:59.999Z`,
+      }
+    },
+  });
+}
+
 export default async function EventReportPage({params}: EventPageProps) {
   const user = await getCurrentUser()
 
@@ -135,7 +148,38 @@ export default async function EventReportPage({params}: EventPageProps) {
       name: format(currentDate, 'dd/MM'),
       total: await getTotalByDay(event.id, event.authorId, format(currentDate, 'yyyy-MM-dd'))
     }
-  ]
+  ];
+
+  const dataChartVisit = [
+    {
+      name: format(subDays(currentDate, 6), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 6), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(subDays(currentDate, 5), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 5), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(subDays(currentDate, 4), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 4), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(subDays(currentDate, 3), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 3), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(subDays(currentDate, 2), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 2), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(subDays(currentDate, 1), 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(subDays(currentDate, 1), 'yyyy-MM-dd'))
+    },
+    {
+      name: format(currentDate, 'dd/MM'),
+      total: await getTotalByDayVisit(event.id, format(currentDate, 'yyyy-MM-dd'))
+    }
+  ];
 
   const arrayParticipant: Task[] = [];
   for (const participant of eventParticipant) {
@@ -214,14 +258,14 @@ export default async function EventReportPage({params}: EventPageProps) {
                   <Overview event={dataChart}/>
                 </CardContent>
               </Card>
-              {/*<Card className="w-[600px] mt-5">*/}
-              {/*  <CardHeader>*/}
-              {/*    <CardTitle>Resumo</CardTitle>*/}
-              {/*  </CardHeader>*/}
-              {/*  <CardContent>*/}
-              {/*    <Resumo/>*/}
-              {/*  </CardContent>*/}
-              {/*</Card>*/}
+              <Card className="w-[600px] mt-5">
+                <CardHeader>
+                  <CardTitle>Visitas</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Visit event={dataChartVisit}/>
+                </CardContent>
+              </Card>
             </div>
             <DataTable columns={columns} data={data}/>
           </div>
