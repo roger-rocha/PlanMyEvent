@@ -23,19 +23,19 @@ export const metadata = {
   },
   description: siteConfig.description,
   keywords: [
-    "Next.js",
-    "React",
-    "Tailwind CSS",
-    "Server Components",
-    "Radix UI",
+    "Evento",
+    "Planejar",
+    "Presencial",
+    "Convidar",
+    "Amigos",
   ],
   authors: [
     {
-      name: "shadcn",
-      url: "https://shadcn.com",
+      name: "Roger Rocha",
+      url: "https://rogerrocha.vercel.app/",
     },
   ],
-  creator: "shadcn",
+  creator: "Roger Rocha",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
@@ -61,7 +61,7 @@ export const metadata = {
     title: siteConfig.name,
     description: siteConfig.description,
     images: [`${siteConfig.url}/og.png`],
-    creator: "@shadcn",
+    creator: "@rogerrochadev",
   },
   icons: {
     icon: "/favicon.ico",

@@ -113,11 +113,6 @@ export default async function EventReportPage({params}: EventPageProps) {
   const totalDeclined = await getTotalParticipantsByStatus(event.id, event.authorId, "DECLINED");
 
   const currentDate = new Date();
-  const currentDateFormatted = format(currentDate, 'dd/MM');
-
-  const last6Days = Array.from({length: 6}, (_, i) =>
-    subDays(currentDate, i + 1)
-  );
 
   const dataChart = [
     {
