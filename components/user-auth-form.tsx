@@ -11,7 +11,8 @@ import * as z from "zod"
 import {cn} from "@/lib/utils"
 import {userAuthSchema} from "@/lib/validations/auth"
 import {Icons} from "@/components/icons"
-import {buttonVariants} from "@/components/ui/button"
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -57,9 +58,40 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
+      <form className="grid w-full 1 items-center gap-4 text-zinc-800" onSubmit={handleSubmit(onSubmit)}>
+        <Label>Email</Label>
+        <Input type={"email"} placeholder={"teste@outlook.com"}></Input>
+        <button
+          type="submit"
+          className="flex h-[44px] items-center justify-center rounded-lg bg-zinc-900 py-2.5 px-4 font-medium text-white hover:bg-zinc-700"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            </>
+          ) : (
+            'Enviar link mágico'
+          )}
+        </button>
+      </form>
+      <div className="mt-10 grid grid-cols-3 col-auto">
+        <div className="inset-0 flex items-center">
+          <span className="w-full border-t"/>
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+								<span className="bg-background px-2 text-muted-foreground">
+									Ou entrar
+								</span>
+        </div>
+        <div className="inset-0 flex items-center">
+          <span className="w-full border-t"/>
+        </div>
+      </div>
+
       <button
         type="button"
-        className={cn(buttonVariants({ variant: "default" }))}
+        className="flex h-[44px] items-center justify-center rounded-lg bg-zinc-900 py-2.5 px-4 font-medium text-white hover:bg-zinc-700"
         onClick={() => {
           setIsGoogleLoading(true)
           signIn("google")
@@ -75,7 +107,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       </button>
       <button
         type="button"
-        className={cn(buttonVariants({ variant: "default" }))}
+        className="flex h-[44px] items-center justify-center rounded-lg bg-zinc-900 py-2.5 px-4 font-medium text-white hover:bg-zinc-700"
         onClick={() => {
           setIsGitHubLoading(true)
           signIn("github")

@@ -1,7 +1,5 @@
 import Image from "next/image"
 import Link from "next/link"
-
-import {siteConfig} from "@/config/site"
 import {cn} from "@/lib/utils"
 import {buttonVariants} from "@/components/ui/button"
 import hero2 from "../../public/images/hero5.svg"
@@ -23,14 +21,6 @@ export default async function IndexPage() {
         <div className="flex gap-4">
           <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
             Crie seu Evento
-          </Link>
-          <Link
-            href={siteConfig.links.github}
-            target="_blank"
-            rel="noreferrer"
-            className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-          >
-            Entrar em um evento
           </Link>
         </div>
       </section>

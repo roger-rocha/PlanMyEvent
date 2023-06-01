@@ -28,12 +28,10 @@ export default function LoginPage() {
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <Icons.logo className="mx-auto h-6 w-6" />
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Bem-Vindo de Volta
-          </h1>
+          <Icons.logo className="mx-auto h-12 w-12" />
+          <h1 className="text-3xl font-bold text-black">Plan My Event</h1>
           <p className="text-sm text-slate-500 dark:text-slate-400">
-            Entre na sua conta com algum dos métodos abaixo
+            Use o seu email para entrar com segurança
           </p>
         </div>
         <UserAuthForm />

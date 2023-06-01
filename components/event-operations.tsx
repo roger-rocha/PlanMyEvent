@@ -85,10 +85,10 @@ export function EventOperations({event}: EventOperationsProps) {
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <TooltipContent>Copiar Link</TooltipContent>
+              <TooltipContent>Compartilhar</TooltipContent>
               <Dialog>
                 <DialogTrigger asChild>
-                  <Button variant="ghost" size="sm" onClick={() => copyEventLink(event.id)}>
+                  <Button variant="ghost" size="sm">
                     <Icons.link className="h-4 w-4"></Icons.link>
                   </Button>
                 </DialogTrigger>
@@ -102,18 +102,11 @@ export function EventOperations({event}: EventOperationsProps) {
                   </DialogHeader>
                   <div className="grid justify-items-center gap-4 py-4">
                     <QRCode value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}/>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <TooltipContent>Copiar</TooltipContent>
-                          <div onClick={() => copyEventLink(event.id)}>
-                            <Input readOnly={true}
-                                   value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}
-                                   className="sm:max-w-[320px] mr-1.5 p-2 border border-gray-300 rounded-md"/>
-                          </div>
-                        </TooltipTrigger>
-                      </Tooltip>
-                    </TooltipProvider>
+                    <div onClick={() => copyEventLink(event.id)}>
+                      <Input readOnly={true}
+                             value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}
+                             className="sm:max-w-[320px] mr-1.5 p-2 border border-gray-300 rounded-md"/>
+                    </div>
                   </div>
                 </DialogContent>
               </Dialog>
