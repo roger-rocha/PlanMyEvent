@@ -5,11 +5,7 @@ interface RaycastMagicLinkEmailProps {
   magicLink?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : '';
-
-export const MagicLinkEmail = ({magicLink = 'https://raycast.com',}: RaycastMagicLinkEmailProps) => (
+export const MagicLinkEmail = ({magicLink}: RaycastMagicLinkEmailProps) => (
   <Html>
     <Head />
     <Preview>Faça login com seu link mágico.</Preview>
@@ -38,7 +34,7 @@ export const MagicLinkEmail = ({magicLink = 'https://raycast.com',}: RaycastMagi
         </Text>
         <Hr style={hr} />
         <Img
-          src={`${baseUrl}/static/raycast-logo.png`}
+          src={`https://github.com/roger-rocha/Images/assets/74687838/d2df819e-733d-4fc6-ad2c-4a4d3aa4365f`}
           width={32}
           height={32}
           style={{
