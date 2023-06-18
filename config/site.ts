@@ -7,7 +7,7 @@ export const siteConfig: SiteConfig = {
   url: "https://plan-my-event.vercel.app/",
   ogImage: "https://plan-my-event.vercel.app/og.png",
   links: {
-    site: "https://rogerrocha.vercel.app/",
+    site: "https://www.rogerocha.com/",
     twitter: "https://twitter.com/rogerrochadev",
     github: "https://github.com/roger-rocha",
   },

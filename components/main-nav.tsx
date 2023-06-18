@@ -8,6 +8,7 @@ import {MainNavItem} from "types"
 import {siteConfig} from "@/config/site"
 import {cn} from "@/lib/utils"
 import {Icons} from "@/components/icons"
+import {MobileNav} from "@/components/mobile-nav";
 
 interface MainNavProps {
   items?: MainNavItem[]
@@ -33,8 +34,10 @@ export function MainNav({ items, children }: MainNavProps) {
               key={index}
               href={item.disabled ? "#" : item.href}
               className={cn(
-                "flex items-center text-lg font-semibold text-slate-600 sm:text-sm",
-                item.href.startsWith(`/${segment}`) && "text-slate-900",
+                "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
+                item.href.startsWith(`/${segment}`)
+                  ? "text-foreground"
+                  : "text-foreground/60",
                 item.disabled && "cursor-not-allowed opacity-80"
               )}
             >
@@ -43,12 +46,16 @@ export function MainNav({ items, children }: MainNavProps) {
           ))}
         </nav>
       ) : null}
-      <div className="relative z-20 grid gap-6 bg-transparent md:hidden">
-        <Link href="/" className="flex items-center space-x-2">
-          <Icons.logo />
-          <span className="font-bold">{siteConfig.name}</span>
-        </Link>
-      </div>
+      <button
+        className="flex items-center space-x-2 md:hidden"
+        onClick={() => setShowMobileMenu(!showMobileMenu)}
+      >
+        {showMobileMenu ? <Icons.close /> : <Icons.logo />}
+        <span className="font-bold">Menu</span>
+      </button>
+      {showMobileMenu && items && (
+        <MobileNav items={items}>{children}</MobileNav>
+      )}
     </div>
   )
 }

@@ -44,15 +44,15 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
     if (!signInResult?.ok) {
       return toast({
-        title: "Something went wrong.",
-        description: "O seu login falhou. Tente novamente.",
+        title: "Aconteceu algum erro.",
+        description: "O seu login não deu certo. Tente novamente.",
         variant: "destructive",
       })
     }
 
     return toast({
-      title: "Check your email",
-      description: "We sent you a login link. Be sure to check your spam too.",
+      title: "Verifique seu email",
+      description: "Enviamos um link mágico para você. Verifique sua caixa de spam também.",
     })
   }
 
@@ -60,19 +60,30 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn("grid gap-6", className)} {...props}>
       <form className="grid w-full 1 items-center gap-4 text-zinc-800" onSubmit={handleSubmit(onSubmit)}>
         <Label>Email</Label>
-        <Input type={"email"} placeholder={"teste@outlook.com"}></Input>
+        <Input
+          id="email"
+          placeholder="nome@outlook.com"
+          type="email"
+          autoCapitalize="none"
+          autoComplete="email"
+          autoCorrect="off"
+          disabled={isLoading || isGitHubLoading}
+          {...register("email")}
+        />
+        {errors?.email && (
+          <p className="px-1 text-xs text-red-600">
+            {errors.email.message}
+          </p>
+        )}
         <button
           type="submit"
           className="flex h-[44px] items-center justify-center rounded-lg bg-zinc-900 py-2.5 px-4 font-medium text-white hover:bg-zinc-700"
           disabled={isLoading}
         >
-          {isLoading ? (
-            <>
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            </>
-          ) : (
-            'Enviar link mágico'
+          {isLoading && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
           )}
+          Entrar com o email
         </button>
       </form>
       <div className="mt-10 grid grid-cols-3 col-auto">

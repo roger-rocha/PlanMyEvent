@@ -19,16 +19,9 @@ import {
 } from "@/components/ui/alert-dialog"
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
 import {Button} from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from "@/components/ui/dialog";
-import {Input} from "@/components/ui/input";
 import {QRCode} from "antd";
+import Modal from "@/components/modal";
+import {AgreementArrowIncrease} from "@vectopus/atlas-icons-react";
 
 async function deleteEvent(eventId: string, eventTitle: string) {
   const response = await fetch(`/api/events/${eventId}`, {
@@ -59,6 +52,8 @@ export function EventOperations({event}: EventOperationsProps) {
   const router = useRouter()
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false)
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false)
+  const [showShareModal, setShowShareModal] = React.useState<boolean>(false)
+
 
   const copyEventLink = (link: string) => {
     navigator.clipboard.writeText(`https://plan-my-event.vercel.app/event/participant/${link}`);
@@ -86,30 +81,9 @@ export function EventOperations({event}: EventOperationsProps) {
           <Tooltip>
             <TooltipTrigger>
               <TooltipContent>Compartilhar</TooltipContent>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" size="sm">
-                    <Icons.link className="h-4 w-4"></Icons.link>
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[350px]">
-                  <DialogHeader>
-                    <DialogTitle className="flex flex-row">Convite do seu evento <Icons.party
-                      className="ml-1.5 h-5 w-5"></Icons.party></DialogTitle>
-                    <DialogDescription>
-                      Esse QR Code é o seu convite para o evento. Compartilhe com seus amigos.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid justify-items-center gap-4 py-4">
-                    <QRCode value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}/>
-                    <div onClick={() => copyEventLink(event.id)}>
-                      <Input readOnly={true}
-                             value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}
-                             className="sm:max-w-[320px] mr-1.5 p-2 border border-gray-300 rounded-md"/>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Button variant="ghost" size="sm" onClick={() => setShowShareModal(true)}>
+                <Icons.link className="h-4 w-4"></Icons.link>
+              </Button>
             </TooltipTrigger>
           </Tooltip>
         </TooltipProvider>
@@ -136,7 +110,6 @@ export function EventOperations({event}: EventOperationsProps) {
           </Tooltip>
         </TooltipProvider>
       </div>
-
 
       <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
         <AlertDialogContent>
@@ -175,6 +148,34 @@ export function EventOperations({event}: EventOperationsProps) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Modal showModal={showShareModal} setShowModal={setShowShareModal}>
+        <div
+          className="inline-block w-full bg-white align-middle shadow-xl transition-all sm:max-w-md sm:rounded-2xl sm:border sm:border-gray-200">
+          <div
+            className="flex flex-col items-center justify-center space-y-3 border-b border-gray-200 p-4 pt-8 sm:px-16">
+            <AgreementArrowIncrease size={24}   />
+            <h3 className="flex flex-row text-lg font-medium">Compartilhe seu evento</h3>
+          </div>
+
+          <div className="flex flex-col space-y-6 bg-gray-50 py-6 text-left sm:rounded-b-2xl">
+            <div className="mx-auto rounded-lg border-2 border-gray-200 bg-white p-4">
+              <QRCode value={`https://plan-my-event.vercel.app/event/participant/${event.id}`}/>
+            </div>
+
+            <div className="mx-auto px-4 sm:px-16">
+              <Button
+                onClick={() => {
+                  copyEventLink(event.id)
+                }}
+                className="flex items-center justify-center gap-2 rounded-md border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black"
+              >
+                <Icons.copyBoard className="h-4 w-4"/> Copiar Link
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   )
 }

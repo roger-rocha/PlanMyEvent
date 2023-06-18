@@ -2,8 +2,12 @@ import {PrismaAdapter} from "@next-auth/prisma-adapter"
 import {NextAuthOptions} from "next-auth"
 import GitHubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
+import EmailProvider from "next-auth/providers/email"
 
 import {db} from "@/lib/db"
+import process from "process";
+import MagicLinkEmail from "@/components/emails/magicLink";
+import {Resend} from "resend";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -21,7 +25,29 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-    })
+    }),
+    EmailProvider({
+      sendVerificationRequest: async ({ identifier, url, provider }) => {
+        const user = await db.user.findUnique({
+          where: {
+            email: identifier,
+          },
+          select: {
+            emailVerified: true,
+          },
+        })
+
+        const resend = new Resend(process.env.RESEND_API_KEY);
+
+        const data = await resend.emails.send({
+          from: "onboarding@resend.dev",
+          to: identifier,
+          subject: "Login Plan My Event",
+          react: MagicLinkEmail({magicLink: url}),
+        })
+
+      },
+    }),
   ],
   callbacks: {
     async session({ token, session }) {

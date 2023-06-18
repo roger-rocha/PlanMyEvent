@@ -26,6 +26,7 @@ import {
   Pencil,
   Pizza,
   Plus,
+  QrCodeIcon,
   Search,
   Send,
   Settings,
@@ -77,6 +78,7 @@ export const Icons = {
   filter: Filter,
   checkCircle: CheckCircle2,
   xCircle: XCircle,
+  qrCode: QrCodeIcon,
   google : ({ ...props }: LucideProps) => (
     <svg
       className='mr-2 h-4 w-4'
