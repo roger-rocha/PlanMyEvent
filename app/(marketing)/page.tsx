@@ -56,7 +56,7 @@ export default async function IndexPage() {
             </div>
           </div>
           <div className="relative overflow-hidden rounded-lg border bg-background p-2">
-            <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
+             <div className="flex h-[180px] flex-col justify-between rounded-md p-6">
               <QrCodeIcon className="h-12 w-12" />
               <div className="space-y-2">
                 <h3 className="font-bold">Qr Code Convite</h3>
