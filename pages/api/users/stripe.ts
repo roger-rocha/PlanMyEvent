@@ -41,7 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         success_url: billingUrl,
         cancel_url: billingUrl,
         payment_method_types: ["card"],
-        mode: "payment",
+        mode: "subscription",
         billing_address_collection: "auto",
         customer_email: user.email,
         line_items: [
