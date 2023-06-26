@@ -16,7 +16,7 @@ const DialogPortal = ({
   ...props
 }: DialogPrimitive.DialogPortalProps) => (
   <DialogPrimitive.Portal className={cn(className)} {...props}>
-    <div className="fixed inset-0 z-50 flex items-start w-screen justify-center sm:items-center sm:align-middle">
+    <div className="fixed inset-0 z-50 flex items-end w-screen justify-center sm:items-center sm:align-middle">
       {children}
     </div>
   </DialogPrimitive.Portal>
@@ -83,7 +83,7 @@ const DialogFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+      "flex items-center flex-row justify-center sm:space-x-2",
       className
     )}
     {...props}
