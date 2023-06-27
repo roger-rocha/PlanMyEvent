@@ -59,7 +59,7 @@ export default async function DashboardPage() {
             <EmptyPlaceholder.Icon name="party" />
             <EmptyPlaceholder.Title>Nenhum evento criado</EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              Você ainda não tem eventos criados. Comece criando um evento.
+              Você não tem eventos. Comece criando um agora.
             </EmptyPlaceholder.Description>
             <EventCreateButton
               className={cn(

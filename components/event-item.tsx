@@ -29,7 +29,7 @@ export function EventItem({ event }: EventItemProps) {
         </Link>
         <div>
           <p className="text-sm text-slate-600">
-            Agendado para {formatDate(event.dateEvent.toString())}
+           {formatDate(event.dateEvent.toString())}
           </p>
         </div>
       </div>

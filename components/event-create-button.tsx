@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import {useRouter} from "next/navigation"
 import {toast} from "@/hooks/use-toast"
 
@@ -33,11 +33,17 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import {useForm} from "react-hook-form";
 
 interface EventCreateButtonProps
   extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
+type FormNewEventData = {
+  title: string;
+  details: string;
+  dateEvent: string;
+}
 
 const time = [
   {time: "00:00", label: "00:00"},
@@ -91,11 +97,13 @@ const time = [
 ];
 
 export function EventCreateButton({className, ...props}: EventCreateButtonProps) {
+
+  const {register, handleSubmit, setValue, watch} = useForm<FormNewEventData>();
   const router = useRouter()
   const [date, setDate] = React.useState<Date | undefined>(new Date())
   const [hour, setHour] = useState<string>(`00:00`)
-
-  async function onClick() {
+  const [open, setOpen] = React.useState(false);
+  async function onSubmit(data: { title: string, details: string, dateEvent: string }) {
 
     const response = await fetch("/api/events", {
       method: "POST",
@@ -103,9 +111,9 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        title: "Evento Novo",
-        details: "Detalhes do seu evento novo",
-        dateEvent: new Date().toISOString()
+        title: data.title,
+        details: data.details,
+        dateEvent: data.dateEvent
       }),
     })
 
@@ -125,16 +133,33 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
       })
     }
 
-    const event = await response.json()
+    router.refresh();
 
-    // This forces a cache invalidation.
-    router.refresh()
+    setOpen(false)
 
-    router.push(`/event/${event.id}`)
+    return toast({
+      title: `Evento Criado`,
+      description: "Comece a enviar o seus convites",
+      variant:"default"
+    })
   }
 
+  useEffect(() => {
+    if (date) {
+      if (hour) {
+        let newDate = date.toISOString().slice(0, 11) + hour + ":00.000Z"
+        console.log(newDate)
+        setValue("dateEvent", newDate)
+      } else {
+        setValue("dateEvent", date.toISOString())
+      }
+    }
+
+  }, [date, hour, setValue])
+
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
           <Icons.add className="w-4 h-4 mr-1.5">
@@ -143,78 +168,81 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
         </Button>
       </DialogTrigger>
       <DialogContent className={"sm:max-w-[600px]"}>
-        <DialogHeader>
-          <DialogTitle>Criando seu evento</DialogTitle>
-          <DialogDescription>Preencha os campos abaixo para criar seu evento.</DialogDescription>
-        </DialogHeader>
-        <div className={" grid gap-4"}>
-          <div className="grid gap-2 mt-5">
-            <Label>Nome</Label>
-            <Input
-              type="text"
-              id="title"
-              placeholder="Festa do pijama">
-            </Input>
-          </div>
-          <div className="grid gap-2 mt-2">
-            <Label>Detalhes sobre o evento</Label>
-            <Textarea
-              placeholder="Detalhes"
-              id="details"
-            >
-            </Textarea>
-          </div>
-          <div className="mt-2 grid gap-2">
-            <Label className="mb-1">Data e Horário</Label>
-            <div className="flex flex-row w-full gap-1">
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-2/3 justify-start text-left font-normal",
-                      !date && "text-muted-foreground"
-                    )}
-                  >
-                    <Icons.calendar className="mr-2 h-4 w-4"/>
-                    {date ? format(date, "dd/MM/Y") : <span>Escolha uma data</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={date}
-                    locale={ptBR}
-                    onSelect={setDate}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <Select defaultValue={hour} onValueChange={(e) => {
-                setHour(e)
-              }}>
-                <SelectTrigger className="w-1/3">
-                  <Icons.timer className="h-5 w-5"/> <SelectValue placeholder="Horário"/>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Horários</SelectLabel>
-                    {time.map((time) => (
-                      <SelectItem value={time.time}>{time.label}</SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle>Criando seu evento</DialogTitle>
+            <DialogDescription>Preencha os campos abaixo para criar seu evento.</DialogDescription>
+          </DialogHeader>
+          <div className={" grid gap-4"}>
+            <div className="grid gap-2 mt-5">
+              <Label>Nome</Label>
+              <Input
+                type="text"
+                id="title"
+                placeholder="Festa do pijama"
+                {...register("title")}>
+              </Input>
+            </div>
+            <div className="grid gap-2 mt-2">
+              <Label>Detalhes sobre o evento</Label>
+              <Textarea
+                placeholder="Detalhes"
+                id="details"
+                {...register("details")}>
+              </Textarea>
+            </div>
+            <div className="mt-2 grid gap-2">
+              <Label className="mb-1">Data e Horário</Label>
+              <div className="flex flex-row w-full gap-1">
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-2/3 justify-start text-left font-normal",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      <Icons.calendar className="mr-2 h-4 w-4"/>
+                      {date ? format(date, "dd/MM/Y") : <span>Escolha uma data</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      locale={ptBR}
+                      onSelect={setDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <Select defaultValue={hour} onValueChange={(e) => {
+                  setHour(e)
+                }}>
+                  <SelectTrigger className="w-1/3">
+                    <Icons.timer className="h-5 w-5"/> <SelectValue placeholder="Horário"/>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Horários</SelectLabel>
+                      {time.map((time) => (
+                        <SelectItem value={time.time}>{time.label}</SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
-        </div>
-        <DialogFooter>
-          <Button
-            className="flex items-center justify-center gap-2 rounded-md border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black"
-          >
-            <Icons.archive className="h-4 w-4"/> Salvar
-          </Button>
-        </DialogFooter>
+          <DialogFooter>
+            <Button type="submit"
+              className="flex items-center mt-5 justify-center gap-2 rounded-md border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black"
+            >
+              <Icons.archive className="h-4 w-4"/> Salvar
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   )
