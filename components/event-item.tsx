@@ -4,7 +4,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 import {EventOperations} from "@/components/event-operations";
 
 interface EventItemProps {
-  event: Pick<Event, "id" | "title" | "dateEvent" | "createdAt">
+  event: Pick<Event, "id" | "title" | "details" | "dateEvent" | "createdAt">
 }
 
 export function formatDate(dateString: string): string {
@@ -33,7 +33,7 @@ export function EventItem({ event }: EventItemProps) {
           </p>
         </div>
       </div>
-      <EventOperations event={{ id: event.id, title: event.title }} />
+      <EventOperations event={{ id: event.id, title: event.title, details: event.details, dateEvent: event.dateEvent }} />
     </div>
   )
 }

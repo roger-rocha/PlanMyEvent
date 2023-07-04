@@ -11,6 +11,7 @@ import {
   ClipboardList,
   ClipboardSignature,
   CreditCard,
+  Database,
   Eye,
   File,
   FileText,
@@ -77,6 +78,7 @@ export const Icons = {
   pencil: Pencil,
   filter: Filter,
   checkCircle: CheckCircle2,
+  database: Database,
   xCircle: XCircle,
   qrCode: QrCodeIcon,
   google : ({ ...props }: LucideProps) => (

@@ -103,6 +103,8 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
   const [date, setDate] = React.useState<Date | undefined>(new Date())
   const [hour, setHour] = useState<string>(`00:00`)
   const [open, setOpen] = React.useState(false);
+  const [limitReached, setLimitReached] = React.useState(true);
+
   async function onSubmit(data: { title: string, details: string, dateEvent: string }) {
 
     const response = await fetch("/api/events", {
@@ -140,7 +142,7 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
     return toast({
       title: `Evento Criado`,
       description: "Comece a enviar o seus convites",
-      variant:"default"
+      variant: "default"
     })
   }
 
@@ -237,7 +239,7 @@ export function EventCreateButton({className, ...props}: EventCreateButtonProps)
           </div>
           <DialogFooter>
             <Button type="submit"
-              className="flex items-center mt-5 justify-center gap-2 rounded-md border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black"
+                    className="flex items-center mt-5 justify-center gap-2 rounded-md border border-black bg-black py-1.5 px-5 text-sm text-white transition-all hover:bg-white hover:text-black"
             >
               <Icons.archive className="h-4 w-4"/> Salvar
             </Button>

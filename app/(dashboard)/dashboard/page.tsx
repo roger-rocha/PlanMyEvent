@@ -24,6 +24,7 @@ const getEventsForUser = async (userId: User["id"]) => {
     select: {
       id: true,
       title: true,
+      details: true,
       dateEvent: true,
       createdAt: true,
     },
