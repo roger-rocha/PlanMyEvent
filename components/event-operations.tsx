@@ -34,7 +34,7 @@ import {Input} from "@/components/ui/input";
 import {Textarea} from "@/components/ui/textarea";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
 import {cn} from "@/lib/utils";
-import {format} from "date-fns";
+import {format, subDays} from "date-fns";
 import {Calendar} from "@/components/calendar";
 import {ptBR} from "date-fns/locale";
 import {
@@ -48,6 +48,8 @@ import {
 } from "@/components/ui/select";
 import {useForm} from "react-hook-form";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Overview} from "@/components/chart";
+import {Visit} from "@/components/chart2";
 
 const time = [
   {time: "00:00", label: "00:00"},
@@ -130,6 +132,30 @@ type FormEventData = {
   details: string;
   dateEvent: string;
 }
+//
+// async function getTotalByDay(eventId: Event["id"], date: string): Promise<number> {
+//   return db.eventParticipant.count({
+//     where: {
+//       eventId: eventId,
+//       createdAt: {
+//         gte: `${date}T00:00:00.000Z`,
+//         lte: `${date}T23:59:59.999Z`,
+//       }
+//     },
+//   });
+// }
+//
+// async function getTotalByDayVisit(eventId: Event["id"], date: string): Promise<number> {
+//   return db.eventVisit.count({
+//     where: {
+//       eventId: eventId,
+//       createdAt: {
+//         gte: `${date}T00:00:00.000Z`,
+//         lte: `${date}T23:59:59.999Z`,
+//       }
+//     },
+//   });
+// }
 
 export function EventOperations({event}: EventOperationsProps) {
   const {register, handleSubmit, setValue, watch} = useForm<FormEventData>({
@@ -180,6 +206,71 @@ export function EventOperations({event}: EventOperationsProps) {
       description: "Seu evento foi salvo.",
     })
   }
+
+  const currentDate = new Date();
+
+  const dataChart = [
+    {
+      name: format(subDays(currentDate, 6), 'dd/MM'),
+      total: 12
+    },
+    {
+      name: format(subDays(currentDate, 5), 'dd/MM'),
+      total: 10
+    },
+    {
+      name: format(subDays(currentDate, 4), 'dd/MM'),
+      total: 5
+    },
+    {
+      name: format(subDays(currentDate, 3), 'dd/MM'),
+      total: 6
+    },
+    {
+      name: format(subDays(currentDate, 2), 'dd/MM'),
+      total: 2
+    },
+    {
+      name: format(subDays(currentDate, 1), 'dd/MM'),
+      total: 0
+    },
+    {
+      name: format(currentDate, 'dd/MM'),
+      total: 3
+    }
+  ];
+
+  const dataChartVisit = [
+    {
+      name: format(subDays(currentDate, 6), 'dd/MM'),
+      total: 4
+    },
+    {
+      name: format(subDays(currentDate, 5), 'dd/MM'),
+      total: 5
+    },
+    {
+      name: format(subDays(currentDate, 4), 'dd/MM'),
+      total: 9
+    },
+    {
+      name: format(subDays(currentDate, 3), 'dd/MM'),
+      total: 10
+    },
+    {
+      name: format(subDays(currentDate, 2), 'dd/MM'),
+      total: 2
+    },
+    {
+      name: format(subDays(currentDate, 1), 'dd/MM'),
+      total: 0
+    },
+    {
+      name: format(currentDate, 'dd/MM'),
+      total: 0
+    }
+  ];
+
 
   const copyEventLink = (link: string) => {
     navigator.clipboard.writeText(`https://plan-my-event.vercel.app/event/participant/${link}`);
@@ -337,11 +428,11 @@ export function EventOperations({event}: EventOperationsProps) {
               <TooltipContent>Ver Relatório</TooltipContent>
               <Dialog open={openRelatorio} onOpenChange={setOpenRelatorio}>
                 <DialogTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <Icons.report className="h-4 w-4"></Icons.report>
-                    </Button>
+                  <Button variant="ghost" size="sm">
+                    <Icons.report className="h-4 w-4"></Icons.report>
+                  </Button>
                 </DialogTrigger>
-                <DialogContent className={"sm:max-w-[1000px]"}>
+                <DialogContent className={"sm:max-w-[1000px] max-h-[700px] sm:overflow-auto"}>
                   <DialogHeader>
                     <DialogTitle>Relatório do Evento</DialogTitle>
                     <DialogDescription>Todas as estasticas e informações do seu evento.</DialogDescription>
@@ -387,6 +478,24 @@ export function EventOperations({event}: EventOperationsProps) {
                       <CardContent className="flex flex-row">
                         <Icons.xCircle className="bg-red-400 text-red-800 h-8 w-8 p-1 rounded-lg mr-3 "/>
                         <div className="text-2xl font-bold">23</div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <div className={"grid sm:grid-cols-2 gap-4 mt-5"}>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Registros</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Overview event={dataChart}/>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Visitas</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <Visit event={dataChartVisit}/>
                       </CardContent>
                     </Card>
                   </div>
