@@ -111,7 +111,11 @@ export default async function EventReportPage({params}: EventPageProps) {
   const totalConfirmed = await getTotalParticipantsByStatus(event.id, event.authorId, "CONFIRMED");
   const totalUnconfirmed = await getTotalParticipantsByStatus(event.id, event.authorId, "UNCONFIRMED");
   const totalDeclined = await getTotalParticipantsByStatus(event.id, event.authorId, "DECLINED");
-
+  const total = await db.eventParticipant.count({
+    where: {
+      eventId: event.id
+    }
+  });
   const currentDate = new Date();
 
   const dataChart = [
@@ -212,7 +216,18 @@ export default async function EventReportPage({params}: EventPageProps) {
         {eventParticipant?.length ? (
           <div className="flex flex-row">
             <div className="flex flex-col mr-5">
-              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                <Card className="h-[100px] border-t-purple-300 border-t-4 ring-gray-200 shadow ring-1 ">
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-md font-medium">
+                      Total
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-row">
+                    <Icons.checkCircle className="h-8 w-8 p-1  mr-3 bg-purple-300 text-purple-800 rounded-lg"/>
+                    <div className="text-2xl font-bold">{total}</div>
+                  </CardContent>
+                </Card>
                 <Card className="h-[100px] border-t-emerald-300 border-t-4 ring-gray-200 shadow ring-1 ">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-md font-medium">

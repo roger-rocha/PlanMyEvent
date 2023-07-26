@@ -17,7 +17,7 @@ export const metadata = {
 }
 
 const getEventsForUser = async (userId: User["id"]) => {
-  return await db.event.findMany({
+  return db.event.findMany({
     where: {
       authorId: userId,
     },
@@ -31,7 +31,7 @@ const getEventsForUser = async (userId: User["id"]) => {
     orderBy: {
       updatedAt: "desc",
     },
-  })
+  });
 }
 
 export default async function DashboardPage() {

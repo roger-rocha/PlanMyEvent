@@ -7,6 +7,22 @@ interface EventItemProps {
   event: Pick<Event, "id" | "title" | "details" | "dateEvent" | "createdAt">
 }
 
+export interface ReportProps {
+  report: {
+    total: number;
+    totalConfirmed: number;
+    totalUnconfirmed: number;
+    totalDeclined: number;
+    dataChart: {
+      name: string, total: number
+    }[];
+    dataChartVisit: {
+      name: string, total: number
+    }[];
+  }
+}
+
+
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   const day = date.getUTCDate().toString().padStart(2, '0');
@@ -17,7 +33,7 @@ export function formatDate(dateString: string): string {
   return `${day}/${month}/${year} ${hours}:${minutes}`;
 }
 
-export function EventItem({ event }: EventItemProps) {
+export async function EventItem({ event }: EventItemProps) {
   return (
     <div className="flex items-center justify-between p-4">
       <div className="grid gap-1">
@@ -33,7 +49,7 @@ export function EventItem({ event }: EventItemProps) {
           </p>
         </div>
       </div>
-      <EventOperations event={{ id: event.id, title: event.title, details: event.details, dateEvent: event.dateEvent }} />
+      <EventOperations event={{ id: event.id, title: event.title, details: event.details, dateEvent: event.dateEvent }}/>
     </div>
   )
 }

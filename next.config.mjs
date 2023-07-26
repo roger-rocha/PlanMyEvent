@@ -1,5 +1,3 @@
-import {withContentlayer} from "next-contentlayer"
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -8,8 +6,8 @@ const nextConfig = {
   },
   experimental: {
     appDir: true,
+    serverActions: true,
     serverComponentsExternalPackages: ["@prisma/client", "@tremor/react"],
   },
 }
-
-export default withContentlayer(nextConfig)
+export default nextConfig
