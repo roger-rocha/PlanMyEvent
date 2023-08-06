@@ -34,7 +34,7 @@ import {
   TimerReset,
   Trash2,
   Twitter,
-  User,
+  User, UserCircle,
   Users,
   UserX,
   X,
@@ -81,6 +81,7 @@ export const Icons = {
   database: Database,
   xCircle: XCircle,
   qrCode: QrCodeIcon,
+  userCircle: UserCircle,
   google : ({ ...props }: LucideProps) => (
     <svg
       className='mr-2 h-4 w-4'

@@ -17,7 +17,7 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 
 
 interface EventProps {
-  event: Pick<Event, "id" | "title" | "details" | "dateEvent">
+  event: Pick<Event, "id" | "title" | "details" | "dateEvent">,
 }
 
 type FormEventInvitationData = {
@@ -41,7 +41,10 @@ export function EventInvitation({event}: EventProps) {
   });
   const [showConfetti, setShowConfetti] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
+  const [confirmado, setConfirmado] = useState<string|null>(null)
+  useEffect(() => {
+    setConfirmado(localStorage.getItem('confirmado'))
+  }, [])
   const router = useRouter();
 
   async function onSubmit(data: FormEventInvitationData) {
@@ -78,6 +81,8 @@ export function EventInvitation({event}: EventProps) {
 
     if (data.status === "CONFIRMED") setShowConfetti(true);
 
+    localStorage.setItem("confirmado", "true")
+
     return (
       toast({
         description: "Sua confirmação foi salva.",
@@ -92,7 +97,7 @@ export function EventInvitation({event}: EventProps) {
   }, [watch]);
 
 
-  if (submitted) {
+  if (submitted || confirmado === "true") {
     return (
       <section className="mob:w-full  mob:min-h-screen overflow-hidden">
         <Confetti

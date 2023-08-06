@@ -14,12 +14,12 @@ export function DataTablePagination<TData>({
   const totalSize = table.getFilteredRowModel().rows.length;
 
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm">
-        <p className="text-sm font-medium">Total: {totalSize}</p>
+    <div className="w-full flex items-center justify-between px-2">
+      <div className="flex flex-row md:flex-1 text-sm">
+        <p className="text-sm font-medium">Total:{totalSize}</p>
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center md:space-x-6 lg:space-x-8">
+        <div className="flex items-center space-x-2 invisible md:visible">
           <p className="text-sm font-medium">Registros por página</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
@@ -39,11 +39,11 @@ export function DataTablePagination<TData>({
             </SelectContent>
           </Select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex md:w-[100px] items-center justify-center text-sm font-medium invisible md:visible">
           Página {table.getState().pagination.pageIndex + 1} de{" "}
           {table.getPageCount()}
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center md:space-x-2">
           <Button
             variant="outline"
             className="hidden h-8 w-8 p-0 lg:flex"

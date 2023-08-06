@@ -59,10 +59,19 @@ async function getTotalByDayVisit(eventId: Event["id"], date: string): Promise<n
   });
 }
 
+export type retornoReport = {
+  total: number,
+  totalConfirmed: number,
+  totalDeclined: number,
+  totalUnconfirmed: number,
+  dataTable: {id: string, name: string, message: string, status: string, created_at: string}[],
+  dataChart: {name: string, total: number}[],
+  dataChartVisit: {name: string, total: number}[]
+}
+
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.method === 'GET') {
     try {
-
       const eventoId = req.query.eventId as string;
 
       const eventParticipant = await getEventsParticipantsForUser(eventoId);
@@ -150,15 +159,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       }
       const data = z.array(taskSchema).parse(arrayParticipant)
 
-      return res.json({
-        "total": total,
-        "totalConfirmed": totalConfirmed,
-        "totalDeclined": totalDeclined,
-        "totalUnconfirmed": totalUnconfirmed,
-        "dataTable": data,
-        "dataChart": dataChart,
-        "dataChartVisit": dataChartVisit
-      })
+      const retorno: retornoReport = {
+          dataChart,
+          dataChartVisit,
+          dataTable: data,
+          total,
+          totalConfirmed,
+          totalDeclined,
+          totalUnconfirmed
+      }
+
+      return res.json(retorno)
     } catch (error) {
       console.log(error)
       return res.status(500).end()
