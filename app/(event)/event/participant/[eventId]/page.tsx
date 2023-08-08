@@ -3,6 +3,7 @@ import {Event} from "@prisma/client"
 
 import {db} from "@/lib/db"
 import {EventInvitation} from "@/components/event-invitation";
+import Head from "next/head";
 import {Metadata} from "next";
 
 async function getEventForParticipant(eventId: Event["id"]) {
@@ -26,9 +27,11 @@ interface EventPageProps {
 }
 
 export const metadata: Metadata = {
-  title: "Convite",
+  title: "Você recebeu um convite",
   description: "Você foi convidado para um evento.",
 }
+
+
 
 export default async function EventInvitationPage({params}: EventPageProps) {
 

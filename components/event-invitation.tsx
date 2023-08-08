@@ -13,6 +13,7 @@ import Confetti from "react-dom-confetti";
 import {Textarea} from "@/components/ui/textarea";
 import {formatDate} from "@/components/event-item";
 import {Metadata} from "next";
+import Head from "next/head";
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card";
 
 
@@ -117,9 +118,13 @@ export function EventInvitation({event}: EventProps) {
     );
   }
 
+  const urlOg = "https://plan-my-event.vercel.app/api/og?title=" + event.title;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center">
-
+      <Head>
+        <meta property="og:image" content={urlOg} />
+      </Head>
       <section className="mob:w-full lg:w-1/2 mob:min-h-screen overflow-hidden">
         <Card className="lg:w-full mob:w-full  mob:min-h-screen overflow-hidden">
           <CardHeader>
