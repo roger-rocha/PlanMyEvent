@@ -37,10 +37,13 @@ export const authOptions: NextAuthOptions = {
           },
         })
 
-        const resend = new Resend(process.env.RESEND_API_KEY);
+        const apiKey = process.env.RESEND_API_KEY;
+        const from = process.env.RESEND_FROM_EMAIL;
+        if (!apiKey || !from) throw new Error("Verification email is not configured");
+        const resend = new Resend(apiKey);
 
         const { error } = await resend.emails.send({
-          from: "onboarding@resend.dev",
+          from,
           to: identifier,
           subject: "Login Plan My Event",
           react: MagicLinkEmail({magicLink: url}),

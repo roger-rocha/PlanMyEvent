@@ -34,32 +34,36 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(data: FormData) {
     setIsLoading(true)
 
-    const signInResult = await signIn("email", {
-      email: data.email.toLowerCase(),
-      redirect: false,
-      callbackUrl: searchParams?.get("from") || "/dashboard",
-    })
+    try {
+      const signInResult = await signIn("email", {
+        email: data.email.toLowerCase(),
+        redirect: false,
+        callbackUrl: searchParams?.get("from") || "/dashboard",
+      })
 
-    setIsLoading(false)
+      if (!signInResult?.ok || signInResult.error) {
+        throw new Error("Email sign-in failed")
+      }
 
-    if (!signInResult?.ok) {
-      return toast({
+      toast({
+        title: "Verifique seu email",
+        description: "Enviamos um link mágico para você. Verifique sua caixa de spam também.",
+      })
+    } catch {
+      toast({
         title: "Aconteceu algum erro.",
         description: "O seu login não deu certo. Tente novamente.",
         variant: "destructive",
       })
+    } finally {
+      setIsLoading(false)
     }
-
-    return toast({
-      title: "Verifique seu email",
-      description: "Enviamos um link mágico para você. Verifique sua caixa de spam também.",
-    })
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form className="grid w-full 1 items-center gap-4 text-zinc-800" onSubmit={handleSubmit(onSubmit)}>
-        <Label>Email</Label>
+        <Label htmlFor="email">Email</Label>
         <Input
           id="email"
           placeholder="nome@outlook.com"
