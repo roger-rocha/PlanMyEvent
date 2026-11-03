@@ -1,3 +1,4 @@
+import {Suspense} from "react"
 import {Metadata} from "next"
 import Link from "next/link"
 
@@ -34,7 +35,7 @@ export default function LoginPage() {
             Use o seu email para entrar com segurança
           </p>
         </div>
-        <UserAuthForm />
+        <Suspense fallback={<p>Carregando...</p>}><UserAuthForm /></Suspense>
       </div>
     </div>
   )

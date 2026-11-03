@@ -5,9 +5,9 @@ import {withMethods} from "@/lib/api-middlewares/with-methods"
 import {db} from "@/lib/db"
 
 const eventCreateSchema = z.object({
-  eventId: z.string(),
-  name: z.string(),
-  message: z.string(),
+  eventId: z.string().min(1).max(100),
+  name: z.string().trim().min(1).max(200),
+  message: z.string().max(2000),
   status: z.enum(["CONFIRMED", "UNCONFIRMED", "DECLINED"])
 })
 
@@ -15,6 +15,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === "POST") {
     try {
       const body = eventCreateSchema.parse(req.body)
+      const exists = await db.event.findUnique({ where: { id: body.eventId }, select: { id: true } })
+      if (!exists) return res.status(404).end()
       const event = await db.eventParticipant.create({
         data: {
           name: body.name,

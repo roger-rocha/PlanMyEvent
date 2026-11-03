@@ -23,7 +23,7 @@ async function addVisitForEvent(eventId: Event["id"]) {
 }
 
 interface EventPageProps {
-  params: { eventId: string }
+  params: Promise<{ eventId: string }>
 }
 
 export const metadata: Metadata = {
@@ -35,13 +35,14 @@ export const metadata: Metadata = {
 
 export default async function EventInvitationPage({params}: EventPageProps) {
 
-  const event = await getEventForParticipant(params.eventId)
+  const { eventId } = await params
+  const event = await getEventForParticipant(eventId)
 
   if (!event) {
     notFound()
   }
 
-  await addVisitForEvent(params.eventId);
+  await addVisitForEvent(eventId);
 
   return (
     <EventInvitation
