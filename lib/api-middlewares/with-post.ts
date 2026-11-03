@@ -20,10 +20,15 @@ export function withPost(handler: NextApiHandler) {
 
       // Check if the user has access to this post.
       const session = await getServerSession(req, res, authOptions)
+      const userId = session?.user?.id
+      if (typeof userId !== "string" || !userId) {
+        return res.status(401).end()
+      }
+
       const count = await db.post.count({
         where: {
           id: query.postId,
-          authorId: session?.user.id,
+          authorId: userId,
         },
       })
 
@@ -50,10 +55,15 @@ export function withEvent(handler: NextApiHandler) {
 
       // Check if the user has access to this post.
       const session = await getServerSession(req, res, authOptions)
+      const userId = session?.user?.id
+      if (typeof userId !== "string" || !userId) {
+        return res.status(401).end()
+      }
+
       const count = await db.event.count({
         where: {
           id: query.eventId,
-          authorId: session?.user.id,
+          authorId: userId,
         },
       })
 

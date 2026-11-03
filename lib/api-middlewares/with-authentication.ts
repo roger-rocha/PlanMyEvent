@@ -7,7 +7,7 @@ export function withAuthentication(handler: NextApiHandler) {
   return async function (req: NextApiRequest, res: NextApiResponse) {
     const session = await getServerSession(req, res, authOptions)
 
-    if (!session) {
+    if (typeof session?.user?.id !== "string" || !session.user.id) {
       return res.status(403).end()
     }
 

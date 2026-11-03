@@ -39,12 +39,13 @@ export const authOptions: NextAuthOptions = {
 
         const resend = new Resend(process.env.RESEND_API_KEY);
 
-        const data = await resend.emails.send({
+        const { error } = await resend.emails.send({
           from: "onboarding@resend.dev",
           to: identifier,
           subject: "Login Plan My Event",
           react: MagicLinkEmail({magicLink: url}),
         })
+        if (error) throw new Error("Unable to send verification email")
 
       },
     }),
@@ -61,6 +62,10 @@ export const authOptions: NextAuthOptions = {
       return session
     },
     async jwt({ token, user }) {
+      if (typeof token.email !== "string" || !token.email) {
+        if (user?.id) token.id = user.id
+        return token
+      }
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
