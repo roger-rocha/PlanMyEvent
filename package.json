@@ -73,7 +73,7 @@
     "cmdk": "^0.1.22",
     "date-fns": "^2.30.0",
     "focus-trap-react": "^10.2.1",
-    "framer-motion": "^10.13.0",
+    "framer-motion": "^14.10.1",
     "google-map-react": "^2.2.1",
     "lucide-react": "^0.214.0",
     "next": "15.5.28",
